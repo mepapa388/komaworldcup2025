@@ -59,6 +59,26 @@ button{border:none;border-radius:8px;cursor:pointer}
 .section[open] summary{background:#dff0ff}
 .section-content{padding:6px 10px}
 
+/* ★ 点数ごとの行頭ラベル（色付き） */
+.section-title{
+  display:inline-block;
+  margin:6px 0 4px;
+  padding:3px 9px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:700;
+}
+.section-title.pt-1{background:#e3f2fd;border-left:4px solid #2196f3;}
+.section-title.pt-2{background:#e8f5e9;border-left:4px solid #43a047;}
+.section-title.pt-3{background:#fff3e0;border-left:4px solid #fb8c00;}
+.section-title.pt-4{background:#f3e5f5;border-left:4px solid #8e24aa;}
+.section-title.pt-5{background:#e0f7fa;border-left:4px solid #00838f;}
+.section-title.pt-6{background:#fbe9e7;border-left:4px solid #d84315;}
+.section-title.pt-7{background:#ede7f6;border-left:4px solid #5e35b1;}
+.section-title.pt-8{background:#e0f2f1;border-left:4px solid #00796b;}
+.section-title.pt-9{background:#fff8e1;border-left:4px solid #ffb300;}
+.section-title.pt-10{background:#fce4ec;border-left:4px solid #c2185b;}
+
 .tech-item{
   background:#fff;margin:6px 0;padding:10px;border-radius:8px;
   display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid transparent
@@ -185,6 +205,12 @@ button{border:none;border-radius:8px;cursor:pointer}
     <input type="number" id="pre-score" class="pre-input" value="0" min="0" max="112" />
     <p class="warning" id="pre-warn">⚠ 予選は0〜112点で入力してください。</p>
   </div>
+
+  <!-- ▼ 全体プリセット ボタン（決勝＋予選まとめて保存/復元） -->
+  <div style="display:flex;gap:8px;margin-top:8px;">
+    <button id="save-overall-preset" style="flex:1;padding:8px;border-radius:10px;background:#fbe9ff;">全体構成を保存</button>
+    <button id="load-overall-preset" style="flex:1;padding:8px;border-radius:10px;background:#e0f7ff;">全体構成を呼び出し</button>
+  </div>
 </div>
 
 <!-- 決勝編成 -->
@@ -195,6 +221,11 @@ button{border:none;border-radius:8px;cursor:pointer}
     <div class="order-box-title">決勝編成（<span id="finals-count">0</span>技）</div>
     <ul id="finals-list" class="order-list"></ul>
     <p style="font-size:11px;opacity:.7;margin-top:4px;">↑（上）／ ↓（下）／ ✕（長押し削除）／ ドラッグで並べ替え</p>
+  </div>
+  <!-- ▼ 決勝プリセット ボタン -->
+  <div style="display:flex;gap:8px;margin-top:8px;">
+    <button id="save-finals-preset" style="flex:1;padding:8px;border-radius:10px;background:#f0f4ff;">決勝構成を保存</button>
+    <button id="load-finals-preset" style="flex:1;padding:8px;border-radius:10px;background:#e0ffe0;">決勝構成を呼び出し</button>
   </div>
 </div>
 
@@ -220,6 +251,12 @@ button{border:none;border-radius:8px;cursor:pointer}
   </div>
 
   <p class="pre-sum">予選技 基礎点合計：<span id="pre-tech-total">0</span> 点</p>
+
+  <!-- ▼ 予選プリセット ボタン -->
+  <div style="display:flex;gap:8px;margin-top:8px;">
+    <button id="save-prelims-preset" style="flex:1;padding:8px;border-radius:10px;background:#f0f4ff;">予選構成を保存</button>
+    <button id="load-prelims-preset" style="flex:1;padding:8px;border-radius:10px;background:#e0ffe0;">予選構成を呼び出し</button>
+  </div>
 </div>
 
 <!-- ミニメニュー -->
@@ -260,7 +297,7 @@ const tricks = {
   1:["紐かけ手乗せ","お手玉","どじょうすくい","メリーゴーランド","初詣","手乗せジャンプ","脚下から回す","線香花火","ブーメランキャッチ","ベルト"],
   2:["つばめ返し","ひばり返し","リフティング","つなわたり","紐のせ","日本一周","ツイスト片道","お手玉足抜き","カメレオン","フック"],
   3:["トンネルつなわたり","腰かけ","手からメリーゴーランド（3周）","ツイスト往復","トランポリン（3回）","おちょこ","タケコプター","二段ゴマ","サンズ（1回）","燈籠","クロスキャッチ"],
-  4:["指のせ","大車輪","かざぐるま","竜巻","へび（3周）","牛若丸片道","渦潮（上下2回）","メダル","舞妓かけ","コメタ","ムチ1回","胴回し","脚くぐし（1回）","脚回し","空中ブランコ"], /* ←追加済み */
+  4:["指のせ","大車輪","かざぐるま","竜巻","へび（3周）","牛若丸片道","渦潮（上下2回）","メダル","舞妓かけ","コメタ","ムチ1回","胴回し","脚くぐし（1回）","脚回し","空中ブランコ"],
   5:["砂時計","はやぶさ返し","鯉の滝登り","両手へび","足かけ","空中大車輪","足乗せ","縦へび3周","シングルクロック","チョップスティック","リキャプチャー型グリーントライアングル","ゼロスタ","クロスキャッチフォール","ダイレクト綱渡り"],
   6:["地獄車3周","白刃取り","燕尾返し","オープンウィップ1回","背くぐし1回","トルネード1回","リフティング〜直大車輪","ピルエット（ひものせ〜ひものせ）","ザリガニ釣り","片白刃","登り龍（5周）"],
   7:["鎖鎌","夜叉車","首切り〜腰切り〜脚切り","忍者","脚くぐし in out","かまいたち3セット in 両手へび","レール","むち3","ゼロスタウィップ","リリーススタート","ストリングトルネード","オロチ"],
@@ -336,8 +373,9 @@ function buildLists(){
   Object.keys(tricks).forEach(pt=>{
     const sec1 = document.createElement('div');
     const sec2 = document.createElement('div');
+
     const title1 = document.createElement('div');
-    title1.className='section-title';
+    title1.className='section-title pt-'+pt;
     title1.textContent = `${pt}点技`;
     const title2 = title1.cloneNode(true);
 
@@ -362,25 +400,39 @@ function getPreScore(){
   return c;
 }
 let lastThreshold = 0;
+
+/* 2000点超で黒バー＆チップ色制御 */
 function updateBarColor(total){
-  // 文字色（2000以上は全体白）
   const chipEls = chipsWrap.querySelectorAll('.total-chip');
+
   if(total>=2000){
-    totalBar.style.background="black";
-    finalSpan.style.color="#fff";
-    chipEls.forEach(c=>c.style.color="#fff");
-  }else{
-    finalSpan.style.color="#000";
-    chipEls.forEach(c=>c.style.color="#000");
-    if(total>=1900) totalBar.style.background="#d60000";      // 赤（濃）
-    else if(total>=1800) totalBar.style.background="#6f2dbd"; // 濃紫
-    else if(total>=1700) totalBar.style.background="#ff7a00"; // 濃オレンジ
-    else if(total>=1600) totalBar.style.background="dodgerblue";
-    else if(total>=1500) totalBar.style.background="#3dbb3d"; // 視認性の高い緑
-    else totalBar.style.background="rgba(240,240,240,.96)";
+    // バーは黒
+    totalBar.style.background = "black";
+    // 総合計は白
+    finalSpan.style.color = "#fff";
+    // いったん全チップ白
+    chipEls.forEach(c => c.style.color = "#fff");
+
+    // 例外：技数／予選／FMD／基礎 は黒
+    const ids = ["selected-count","pre-total","fmd-total","base-total"];
+    ids.forEach(id=>{
+      const chip = document.getElementById(id)?.closest(".total-chip");
+      if(chip) chip.style.color = "#000";
+    });
+  } else {
+    // 通常色
+    finalSpan.style.color = "#000";
+    chipEls.forEach(c => c.style.color = "#000");
+
+    if(total>=1900) totalBar.style.background = "#d60000";      // 赤
+    else if(total>=1800) totalBar.style.background = "#6f2dbd"; // 濃紫
+    else if(total>=1700) totalBar.style.background = "#ff7a00"; // 濃オレンジ
+    else if(total>=1600) totalBar.style.background = "dodgerblue";
+    else if(total>=1500) totalBar.style.background = "#3dbb3d"; // 緑
+    else totalBar.style.background = "rgba(240,240,240,.96)";
   }
 
-  // しきい値超え演出（ポップ＋軽振動）
+  // しきい値演出
   const thresholds=[1500,1600,1700,1800,1900,2000];
   const crossed = thresholds.find(t=> total>=t && lastThreshold < t);
   if(crossed!=null){
@@ -389,7 +441,7 @@ function updateBarColor(total){
     showToast(`${crossed}点ライン突破！`);
     lastThreshold = crossed;
   }
-  if(total<thresholds[0]) lastThreshold = 0;
+  if(total < thresholds[0]) lastThreshold = 0;
 }
 
 function calcTotal(){
@@ -442,7 +494,7 @@ document.addEventListener('change', e=>{
   }
 });
 
-/* ================== 予選 検索（ハイライトのみ） ================== */
+/* ================== 予選 検索 ================== */
 function applySearch(){
   const q = kanaNormalize(searchInput.value.trim());
   let hits=0;
@@ -500,7 +552,7 @@ finalsList.addEventListener("click",e=>{
   rebuildFinalsList();
 });
 
-/* 簡易ドラッグ&ドロップ（決勝） */
+/* DnD（決勝） */
 let dragEl=null;
 finalsList.addEventListener('dragstart',e=>{ dragEl=e.target; dragEl.classList.add('dragging'); });
 finalsList.addEventListener('dragend',e=>{ if(dragEl){dragEl.classList.remove('dragging'); dragEl=null; rebuildFinalsList(); }});
@@ -581,7 +633,7 @@ function preListHandler(e,listSelf,listOther){
   const act=e.target.dataset.act; const li=e.target.closest(".order-item");
   if(act==="up" && li.previousElementSibling) li.parentNode.insertBefore(li,li.previousElementSibling);
   else if(act==="down" && li.nextElementSibling) li.parentNode.insertBefore(li.nextElementSibling,li);
-  else if(act==="del") { /* 長押し対応にしたので軽タップは説明のみ */ showToast("削除は長押しで実行"); return; }
+  else if(act==="del") { showToast("削除は長押しで実行"); return; }
   else if(act==="to2") swapMove(li, true);
   else if(act==="to1") swapMove(li, false);
   updatePreSummary();
@@ -778,6 +830,117 @@ function loadState(){
 }
 window.addEventListener("DOMContentLoaded",()=>{ calcTotal(); loadState(); });
 
+/* ================== プリセット保存・読込 ================== */
+const FINAL_PRESET_KEY   = "tsubame2025_final_preset";
+const PRE_PRESET_KEY     = "tsubame2025_pre_preset";
+const OVERALL_PRESET_KEY = "tsubame2025_overall_preset";
+
+function serializeOrderList(list){
+  return [...list.querySelectorAll('.order-name')].map(n=>{
+    const m=n.textContent.match(/^\[(\d+)点]\s*(.+)$/);
+    return m ? {pt:Number(m[1]), name:m[2]} : null;
+  }).filter(Boolean);
+}
+
+/* 決勝プリセット */
+document.getElementById("save-finals-preset").addEventListener("click",()=>{
+  const data = serializeOrderList(finalsList);
+  if(!data.length){
+    showToast("保存する決勝構成がありません");
+    return;
+  }
+  localStorage.setItem(FINAL_PRESET_KEY, JSON.stringify(data));
+  showToast("決勝構成を保存しました");
+});
+document.getElementById("load-finals-preset").addEventListener("click",()=>{
+  const raw = localStorage.getItem(FINAL_PRESET_KEY);
+  if(!raw){
+    showToast("保存済みの決勝構成がありません");
+    return;
+  }
+  try{
+    const data = JSON.parse(raw);
+    finalsList.innerHTML = "";
+    data.slice(0,30).forEach(d=>{
+      finalsList.appendChild(orderLiTemplate(d.pt, d.name));
+    });
+    rebuildFinalsList();
+    showToast("決勝構成を反映しました");
+  }catch{
+    showToast("決勝プリセットの読込に失敗しました");
+  }
+});
+
+/* 予選プリセット（第1R・第2R） */
+document.getElementById("save-prelims-preset").addEventListener("click",()=>{
+  const r1 = serializeOrderList(list1);
+  const r2 = serializeOrderList(list2);
+  if(!r1.length && !r2.length){
+    showToast("保存する予選構成がありません");
+    return;
+  }
+  const preset = {r1, r2};
+  localStorage.setItem(PRE_PRESET_KEY, JSON.stringify(preset));
+  showToast("予選構成を保存しました");
+});
+
+document.getElementById("load-prelims-preset").addEventListener("click",()=>{
+  const raw = localStorage.getItem(PRE_PRESET_KEY);
+  if(!raw){
+    showToast("保存済みの予選構成がありません");
+    return;
+  }
+  try{
+    const preset = JSON.parse(raw);
+    list1.innerHTML = "";
+    list2.innerHTML = "";
+    (preset.r1 || []).slice(0,6).forEach(d=>{
+      list1.appendChild(mkPreOrderItem(d.pt, d.name, 1));
+    });
+    (preset.r2 || []).slice(0,6).forEach(d=>{
+      list2.appendChild(mkPreOrderItem(d.pt, d.name, 2));
+    });
+    updatePreSummary();
+    showToast("予選構成を反映しました");
+  }catch{
+    showToast("予選プリセットの読込に失敗しました");
+  }
+});
+
+/* 全体プリセット（決勝スコア＋決勝編成＋予選編成＋予選点） */
+document.getElementById("save-overall-preset").addEventListener("click",()=>{
+  // 最新状態を保存してから、そのスナップショットをコピー
+  saveState();
+  const raw = localStorage.getItem("tsubame2025");
+  if(!raw){
+    showToast("保存する構成がありません");
+    return;
+  }
+  localStorage.setItem(OVERALL_PRESET_KEY, raw);
+  showToast("全体構成を保存しました");
+});
+
+document.getElementById("load-overall-preset").addEventListener("click",()=>{
+  const raw = localStorage.getItem(OVERALL_PRESET_KEY);
+  if(!raw){
+    showToast("保存済みの全体構成がありません");
+    return;
+  }
+  try{
+    // 現在のUIを初期化してから、全体プリセットを現在状態に上書き
+    document.querySelectorAll(".chk,.multi,.pre-chk").forEach(c=>c.checked=false);
+    list1.innerHTML=""; list2.innerHTML=""; finalsList.innerHTML="";
+    localStorage.setItem("tsubame2025", raw);
+    loadState();
+    calcTotal();
+    updatePreSummary();
+    rebuildFinalsList();
+    showToast("全体構成を反映しました");
+  }catch{
+    showToast("全体プリセットの読込に失敗しました");
+  }
+});
+
 /* ================== ツアー（初回のみ） ================== */
 const tour=document.getElementById('tour');
 const tourHide=()=>tour.style.display='none';
@@ -787,7 +950,7 @@ document.getElementById('tour-never').addEventListener('click',tourNever);
 if(!localStorage.getItem('tsubame2025_tour')){ setTimeout(()=>{ tour.style.display='flex'; }, 300); }
 
 /* ================== PWA 簡易対応（オフライン） ================== */
-// manifest を動的生成（アイコン省略の簡易版）
+// manifest を動的生成
 (function(){
   const manifest = {
     name:"ツバメカップ2025 技チェック＆編成",
@@ -827,11 +990,6 @@ if('serviceWorker' in navigator){
   const swUrl = URL.createObjectURL(blob);
   navigator.serviceWorker.register(swUrl);
 }
-
-/* ================== 追加バインド ================== */
-document.getElementById('btn-export'); // already bound
-document.getElementById('btn-print');  // already bound
-document.getElementById('btn-reset');  // already bound
 </script>
 </body>
 </html>
