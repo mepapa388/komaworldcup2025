@@ -59,7 +59,7 @@ button{border:none;border-radius:8px;cursor:pointer}
 .section[open] summary{background:#dff0ff}
 .section-content{padding:6px 10px}
 
-/* ★ 点数ごとの行頭ラベル（色付き） */
+/* 点数ラベル */
 .section-title{
   display:inline-block;
   margin:4px 0;
@@ -79,7 +79,7 @@ button{border:none;border-radius:8px;cursor:pointer}
 .section-title.pt-9{background:#fff8e1;border-left:4px solid #ffb300;}
 .section-title.pt-10{background:#fce4ec;border-left:4px solid #c2185b;}
 
-/* ★ 点数ごとの折りたたみ（details） */
+/* 点数ごとの折りたたみ */
 .pt-group{
   margin:2px 0 4px;
 }
@@ -105,9 +105,23 @@ button{border:none;border-radius:8px;cursor:pointer}
 .tech-item.search-hit{background:var(--hit-bg);border-color:var(--hit-bd)}
 .tech-title{font-size:16px}
 .tech-pt-label{font-size:12px;color:#666}
-.tech-controls{display:flex;align-items:center;gap:14px;min-width:140px;justify-content:flex-end}
+.tech-controls{display:flex;align-items:center;gap:8px;min-width:160px;justify-content:flex-end;flex-wrap:wrap}
 .tech-controls label{display:inline-flex;align-items:center;gap:6px;padding:6px 8px;border-radius:8px;border:1px solid #ddd;background:#fafafa}
 .tech-controls input[type=checkbox]{width:18px;height:18px}
+
+/* 判定基準ボタン */
+.judge-btn{
+  font-size:11px;
+  padding:4px 8px;
+  border-radius:999px;
+  border:1px solid #90caf9;
+  background:#e3f2fd;
+  color:#0d47a1;
+  white-space:nowrap;
+}
+.judge-btn:hover{
+  background:#bbdefb;
+}
 
 .pre-box{margin-top:14px;background:#e6f4ff;padding:10px;border-radius:10px;font-size:14px}
 .pre-input{width:90px;padding:6px 8px;font-size:16px;border-radius:8px;border:1px solid #cfcfcf;background:#fff}
@@ -130,8 +144,6 @@ button{border:none;border-radius:8px;cursor:pointer}
 .order-btn-del{border-color:#ff6666;background:#ffdddd;color:#a40000}
 .order-btn-move{border-color:var(--blue);background:#e2f0ff;color:#004a99}
 .order-item.dragging{opacity:.6}
-
-.pre-sum{margin-top:8px;font-size:13px;font-weight:700}
 
 .mini-nav{
   position:fixed;left:0;right:0;bottom:0;z-index:180;background:#fff;
@@ -172,6 +184,54 @@ button{border:none;border-radius:8px;cursor:pointer}
 .tour-card ul{margin:8px 0 0 18px; font-size:14px}
 .tour-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
 .tour-actions button{padding:8px 12px;font-size:14px}
+
+/* 判定基準モーダル */
+.judge-modal{
+  position:fixed;
+  inset:0;
+  z-index:260;
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+.judge-overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.4);
+}
+.judge-dialog{
+  position:relative;
+  z-index:1;
+  width:min(480px,92vw);
+  max-height:80vh;
+  background:#fff;
+  border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.3);
+  display:flex;
+  flex-direction:column;
+}
+.judge-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:8px 12px;
+  border-bottom:1px solid #eee;
+  font-size:14px;
+  font-weight:700;
+}
+#judge-close{
+  border:none;
+  background:transparent;
+  font-size:16px;
+  padding:4px 6px;
+  cursor:pointer;
+}
+.judge-body{
+  padding:10px 12px;
+  font-size:14px;
+  line-height:1.6;
+  overflow-y:auto;
+}
 </style>
 </head>
 <body>
@@ -225,7 +285,7 @@ button{border:none;border-radius:8px;cursor:pointer}
     <p class="warning" id="pre-warn">⚠ 予選は0〜112点で入力してください。</p>
   </div>
 
-  <!-- ▼ 全体プリセット ボタン（決勝＋予選まとめて保存/復元） -->
+  <!-- 全体プリセット -->
   <div style="display:flex;gap:8px;margin-top:8px;">
     <button id="save-overall-preset" style="flex:1;padding:8px;border-radius:10px;background:#fbe9ff;">全体構成を保存</button>
     <button id="load-overall-preset" style="flex:1;padding:8px;border-radius:10px;background:#e0f7ff;">全体構成を呼び出し</button>
@@ -241,7 +301,7 @@ button{border:none;border-radius:8px;cursor:pointer}
     <ul id="finals-list" class="order-list"></ul>
     <p style="font-size:11px;opacity:.7;margin-top:4px;">↑（上）／ ↓（下）／ ✕（長押し削除）／ ドラッグで並べ替え</p>
   </div>
-  <!-- ▼ 決勝プリセット ボタン -->
+  <!-- 決勝プリセット -->
   <div style="display:flex;gap:8px;margin-top:8px;">
     <button id="save-finals-preset" style="flex:1;padding:8px;border-radius:10px;background:#f0f4ff;">決勝構成を保存</button>
     <button id="load-finals-preset" style="flex:1;padding:8px;border-radius:10px;background:#e0ffe0;">決勝構成を呼び出し</button>
@@ -271,10 +331,24 @@ button{border:none;border-radius:8px;cursor:pointer}
 
   <p class="pre-sum">予選技 基礎点合計：<span id="pre-tech-total">0</span> 点</p>
 
-  <!-- ▼ 予選プリセット ボタン -->
+  <!-- 予選プリセット -->
   <div style="display:flex;gap:8px;margin-top:8px;">
     <button id="save-prelims-preset" style="flex:1;padding:8px;border-radius:10px;background:#f0f4ff;">予選構成を保存</button>
     <button id="load-prelims-preset" style="flex:1;padding:8px;border-radius:10px;background:#e0ffe0;">予選構成を呼び出し</button>
+  </div>
+</div>
+
+<!-- 判定基準モーダル -->
+<div id="judge-modal" class="judge-modal">
+  <div class="judge-overlay" data-close="1"></div>
+  <div class="judge-dialog">
+    <div class="judge-header">
+      <span id="judge-title">技名</span>
+      <button type="button" id="judge-close">✕</button>
+    </div>
+    <div class="judge-body">
+      <p id="judge-text">ここに判定基準が表示されます。</p>
+    </div>
   </div>
 </div>
 
@@ -325,6 +399,978 @@ const tricks = {
  10:["ダイレク燈籠","2個うずしお3回","てじなーにゃむち","ヤトボロス"]
 };
 
+/* ================== 判定基準データ ================== */
+const judgeCriteria = {
+  // 1点技
+  "紐かけ手乗せ": `【点数】1
+【審査基準】
+・紐のかけ方は問わない
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+こまが手に乗った瞬間`,
+
+  "お手玉": `【点数】1
+【審査基準】
+・右手⇔左手を5回移動する（2.5往復）
+・移動の際、こまは「投げて」移動していること
+　※こまが手の間を滑って移動しているものは失敗
+【成功判定（フィニッシュ）】
+5回目でこまが手に乗った瞬間
+【成功判定（コンボ中）】
+5回目でこまが手に乗った瞬間`,
+
+  "どじょうすくい": `【点数】1
+【審査基準】
+・「カモーン」の掛け声でも OK
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+こまが手に乗った瞬間`,
+
+  "メリーゴーランド": `【点数】1
+【審査基準】
+・3周すること
+・床からスタートし、床でゴールすること
+【成功判定（フィニッシュ／コンボ中）】
+こまが床に回った瞬間`,
+
+  "初詣": `【点数】1
+【審査基準】
+・手を2回叩いていること
+・投げ上げる手とキャッチする手は同じでなくてもよい
+【成功判定（フィニッシュ／コンボ中）】
+こまが手に乗った瞬間`,
+
+  "手乗せジャンプ": `【点数】1
+【審査基準】
+・こまが手に乗った状態で両足が床から離れること
+・ジャンプ後にも手の上でこまが回っていること
+【成功判定（フィニッシュ／コンボ中）】
+ジャンプ後に脚が床についた瞬間`,
+
+  "脚下から回す": `【点数】1
+【スタート技】
+【審査基準】
+・脚の下からこまを回すこと
+・どちらの脚でもよい
+・足が床についていても、宙に浮いていてもよい
+・脚の内側／外側は問わない
+【成功判定（フィニッシュ／コンボ中）】
+こまが床に回った瞬間`,
+
+  "線香花火": `【点数】1
+【審査基準】
+・最後は回転がなくなる状態で終わること
+【成功判定（フィニッシュ／コンボ中）】
+こまが床に落ちた瞬間`,
+
+  "ブーメランキャッチ": `【点数】1
+【スタート技】
+【審査基準】
+・こまから紐が解けて回転がかかっていること
+【成功判定（フィニッシュ／コンボ中）】
+こまをキャッチした瞬間`,
+
+  "ベルト": `【点数】1
+【審査基準】
+・紐2本にこまが均等に乗っていること
+　（綱渡りのように片側に寄っている状態は不可）
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  // 2点技
+  "つばめ返し": `【点数】2
+【スタート技】
+【審査基準】
+・外投げでこまを投げる
+・右手で投げる場合：紐は時計回りに巻く
+・左手で投げる場合：紐は半時計回りに巻く
+・投げた手と同じ手でこまを取る
+【成功判定（フィニッシュ／コンボ中）】
+こまが手に乗った瞬間`,
+
+  "ひばり返し": `【点数】2
+【スタート技】
+【審査基準】
+・外投げでこまを投げる
+・右手で投げる場合：紐は時計回り
+・左手で投げる場合：紐は半時計回り
+・投げた手と逆の手でこまを取る
+【成功判定（フィニッシュ／コンボ中）】
+こまが手に乗った瞬間`,
+
+  "リフティング": `【点数】2
+【スタート技】
+【審査基準】
+・こまを投げ手から直接脚で蹴って浮かせる
+・投げてから手に乗るまでに脚以外の部分に触れない
+・途中で手のひらなどのストールを経由しない
+【成功判定（フィニッシュ／コンボ中）】
+こまが手に乗った瞬間`,
+
+  "つなわたり": `【点数】2
+【審査基準】
+・紐の長さは肩幅以上
+・手から手の間で、こまが紐から離れないこと
+【成功判定（フィニッシュ／コンボ中）】
+こまが手に乗った瞬間`,
+
+  "紐のせ": `【点数】2
+【審査基準】
+・身体の正面で取ること
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "日本一周": `【点数】2
+【審査基準】
+・こまは遠心力と重力によって紐の上に乗っていること
+　（紐のせ状態で一周回るだけは失敗）
+・自分が一周しても良い／背面で紐を持ち替えても良い
+【成功判定（フィニッシュ／コンボ中）】
+こまが床に戻ってきた瞬間`,
+
+  "ツイスト片道": `【点数】2
+【審査基準】
+・動作後に手が身体の正面まで戻ってくること
+・動作中にこまが手から離れないこと
+【成功判定（フィニッシュ／コンボ中）】
+手が身体の正面に戻ってきた瞬間`,
+
+  "お手玉足抜き": `【点数】2
+【審査基準】
+・どちらの脚を使ってもよい
+・こまを投げた手とキャッチする手は同じ手であること
+【成功判定（フィニッシュ／コンボ中）】
+こまが手に乗った瞬間`,
+
+  "カメレオン": `【点数】2
+【審査基準】
+・紐を弾く動きでこまに紐をかける
+・こまを持ち上げる際、手に紐を複数束ねて持たない
+【成功判定（フィニッシュ／コンボ中）】
+こまが手に乗った瞬間`,
+
+  "フック": `【点数】2
+【審査基準】
+・こまは人差し指のみに触れていること
+・曲げた指の腹側（内側）にこまが乗っていること
+【成功判定（フィニッシュ／コンボ中）】
+こまが手に乗った瞬間`,
+
+  // 3点技
+  "トンネルつなわたり": `【点数】3
+【審査基準】
+・脚の下でつなわたりができていること
+・脚の左右は問わない
+【成功判定（フィニッシュ／コンボ中）】
+こまが手に乗った瞬間`,
+
+  "腰かけ": `【点数】3
+【審査基準】
+・身体の後ろ側で行っていること
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "手からメリーゴーランド（3周）": `【点数】3
+【審査基準】
+・手から直接メリーゴーランドの動きに入る
+・3周すること
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+3周し終わった瞬間`,
+
+  "ツイスト往復": `【点数】3
+【審査基準】
+・片道・往復ともに、毎回手が身体の正面まで戻ってくること
+・動作中にこまが手から離れないこと
+【成功判定（フィニッシュ／コンボ中）】
+手が身体の正面に戻ってきた瞬間`,
+
+  "トランポリン（3回）": `【点数】3
+【審査基準】
+・こまは頭より高く上げる
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "おちょこ": `【点数】3
+【スタート技】
+【審査基準】
+・投げてから手に乗るまでに、手の甲以外の部分に触れない
+【成功判定（フィニッシュ／コンボ中）】
+こまが手の甲に乗った瞬間`,
+
+  "タケコプター": `【点数】3
+【審査基準】
+・頭への乗せ方は問わない
+・頭の上でこまが静止していること（瞬間でも可）
+【成功判定（フィニッシュ／コンボ中）】
+こまが頭の上に乗った瞬間`,
+
+  "二段ゴマ": `【点数】3
+【審査基準】
+・手の上で行うこと
+・こまが重なっている時、2つとも回転していること
+【成功判定（フィニッシュ／コンボ中）】
+こまがこまの上に乗った瞬間`,
+
+  "サンズ（1回）": `【点数】3
+【審査基準】
+・手の間（手の上または下）を一周すること
+【成功判定（フィニッシュ／コンボ中）】
+一周後に紐が地面に対して垂直に向いた瞬間`,
+
+  "燈籠": `【点数】3
+【審査基準】
+・親指以外がこまに触れていないこと
+・乗せ方は問わない
+【成功判定（フィニッシュ／コンボ中）】
+こまが親指の上に乗り、親指のみに触れた瞬間`,
+
+  "クロスキャッチ": `【点数】3
+【審査基準】
+・腕を交差させた時、右手が上になるようにする
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  // 4点技
+  "指のせ": `【点数】4
+【審査基準】
+・水かき部分に乗っていないこと
+・真っ直ぐ伸ばした指の上に乗せる
+・指に当たって弾くだけの状態は失敗
+【成功判定（フィニッシュ／コンボ中）】
+こまが指の上で静止した瞬間`,
+
+  "大車輪": `【点数】4
+【審査基準】
+・こまが身体の周りを一周していること
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+こまが身体の周りを1周し切った瞬間`,
+
+  "かざぐるま": `【点数】4
+【審査基準】
+・手のひらが上を向くこと
+【成功判定（フィニッシュ／コンボ中）】
+手のひらが上を向き、こまが親指と人差し指の間で静止した瞬間`,
+
+  "竜巻": `【点数】4
+【審査基準】
+・大車輪が適切に成立していること
+・こまが身体の周りを2周していること
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+こまが身体の周りを2周し切った瞬間`,
+
+  "へび（3周）": `【点数】4
+【審査基準】
+・こま本体に紐が1周巻かれている
+・腕に紐が3周以上巻かれている
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+3周分回り切った瞬間`,
+
+  "牛若丸片道": `【点数】4
+【審査基準】
+・こまが頭の後ろを通っていること
+【成功判定（フィニッシュ／コンボ中）】
+こまが手に乗った瞬間`,
+
+  "渦潮（上下2回）": `【点数】4
+【審査基準】
+・上下交互に通っていること
+　（上→下→上→下 または 下→上→下→上）
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+2往復した瞬間`,
+
+  "メダル": `【点数】4
+【審査基準】
+・紐の上でこまが静止していること
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐の上で静止した瞬間`,
+
+  "舞妓かけ": `【点数】4
+【審査基準】
+・両手の位置が肩より上にあること
+・頭の後ろでこまを取ること
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "コメタ": `【点数】4
+【審査基準】
+・こまと紐が途中で離れないこと
+・紐を持ち続ける手と、紐を離す手は別の手である
+【成功判定（フィニッシュ／コンボ中）】
+飛んだ紐を手で掴み、こまが紐に乗った瞬間`,
+
+  "ムチ1回": `【点数】4
+【審査基準】
+・紐で輪を作り、肩で持っていること
+・紐を半周以上回してかける
+・サディスティック状態になっていないこと
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "胴回し": `【点数】4
+【審査基準】
+・ハーフターン禁止
+・左右どちらからでも良いが、こまの向きが身体に対して反転しないこと
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "脚くぐし（1回）": `【点数】4
+【審査基準】
+・紐のかけ方が適切であること
+　（紐を上から＝外側からかけているか）
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "脚回し": `【点数】4
+【審査基準】
+・ハーフターン禁止
+・左右どちらからでも良いが、こまの向きが身体に対して反転しないこと
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "空中ブランコ": `【点数】4
+【審査基準】
+・こまと身体の間に紐が位置した状態から始める
+・手より前側にこまが出てから引き上げる
+【成功判定（フィニッシュ／コンボ中）】
+こまが手に乗った瞬間`,
+
+  // 5点技
+  "砂時計": `【点数】5
+【審査基準】
+・軸の両端以外でこまに触れていないこと
+・こまが裏返った時に、親指がこまから離れていること
+・燈籠から行う
+・片手のみで行う
+【成功判定（フィニッシュ／コンボ中）】
+こまの向きが戻り、親指のみにこまが触れている状態になった瞬間`,
+
+  "はやぶさ返し": `【点数】5
+【審査基準】
+・こまが伝う紐の長さは肩幅以上
+・スタートの手が、もう一方の手より上に位置していること
+【成功判定（フィニッシュ／コンボ中）】
+こまが手に乗った瞬間`,
+
+  "鯉の滝登り": `【点数】5
+【審査基準】
+・こまが伝う紐の長さは「腰から肩」の長さ以上
+【成功判定（フィニッシュ／コンボ中）】
+登ったこまが上の手に触れた瞬間`,
+
+  "両手へび": `【点数】5
+【審査基準】
+・こまに紐が1周巻き付いている
+・腕に紐が5周以上巻き付いている
+・こまは適切に紐を伝っている
+・少なくとも1周は左右両方の腕に巻かれていること
+　（例：右1周＋左4周などOK）
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+5周分回り切った瞬間`,
+
+  "足かけ": `【点数】5
+【審査基準】
+・紐が脚で挟まれている
+・補助手で紐さばきをサポートしてもよい
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "空中大車輪": `【点数】5
+【スタート技】
+【審査基準】
+・手のひらを経由していないこと
+・大車輪が成立していること
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+こまが身体の周りを1周し切った瞬間`,
+
+  "足乗せ": `【点数】5
+【スタート技】
+【審査基準】
+・投げてから足の甲に乗るまでに、身体の膝より上の部分に触れない
+・足の甲にストールされていること
+【成功判定（フィニッシュ／コンボ中）】
+こまが足の甲に乗った瞬間`,
+
+  "縦へび3周": `【点数】5
+【審査基準】
+・腕の周りを3周すること
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+3周分回り切った瞬間`,
+
+  "シングルクロック": `【点数】5
+【審査基準】
+・こまが浮いている最中に、紐の回転方向が反転すること
+・サディスティック状態になっていないこと
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "チョップスティック": `【点数】5
+【審査基準】
+・紐の形が適切であること
+・こまは空中に浮いた状態から、チョップスティックの紐の上に乗ること
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "リキャプチャー型グリーントライアングル": `【点数】5
+【審査基準】
+・正しい過程で行うこと
+・途中で違う紐の乗り方をした場合は失敗
+【成功判定（フィニッシュ／コンボ中）】
+グリーントライアングルの形が成立した瞬間`,
+
+  "ゼロスタ": `【点数】5
+【スタート技】
+【審査基準】
+・こまが止まった状態から技に入る
+・ちょんかけ（リジェネ）の要領で紐に乗せる
+・空中に飛ばしてから紐で取る
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "クロスキャッチフォール": `【点数】5
+【スタート技】
+【審査基準】
+・こまが手に乗る際、以下を満たすこと
+　1. 左手と左膝が触れている
+　2. 左手と左膝の間から右手が出ている
+・こまが手に乗った後、掌落としを行う
+【成功判定（フィニッシュ）】
+掌落としの後にこまが手に乗った瞬間
+【成功判定（コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "ダイレクト綱渡り": `【点数】5
+【スタート技】
+【審査基準】
+・ひものせ状態にならない（こまの高さが両手の間の高さにならない）
+・こまが紐に乗る際、紐は肩幅以上の幅で持つ
+・こまが左回転の場合、紐の中心より左側で取り、そこから右手に戻る
+【成功判定（フィニッシュ／コンボ中）】
+こまが手に乗った瞬間`,
+
+  // 6点技
+  "地獄車3周": `【点数】6
+【審査基準】
+・3周は連続で行うこと
+　（1周ごとに止めると失敗）
+【成功判定（フィニッシュ／コンボ中）】
+3周後に紐が地面に対して垂直に向いた瞬間`,
+
+  "白刃取り": `【点数】6
+【審査基準】
+・投げ上げた際、紐から両手が離れていること
+【成功判定（フィニッシュ／コンボ中）】
+浮いた紐を掴んだ瞬間（かつこまが紐に乗っていること）`,
+
+  "燕尾返し": `【点数】6
+【スタート技】
+【審査基準】
+・投げた手で取ること
+・背面で取ること
+【成功判定（フィニッシュ／コンボ中）】
+こまが手に乗った瞬間`,
+
+  "オープンウィップ1回": `【点数】6
+【審査基準】
+・紐は束ねずに持つ
+・サディスティック状態になっていない
+・紐の左手側でこまを取る（リキャプ状態にする）
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "背くぐし1回": `【点数】6
+【審査基準】
+・紐のかけ方が適切であること
+　（紐を上から＝外側からかけているか）
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "トルネード1回": `【点数】6
+【審査基準】
+・空中大車輪のかけ方で始める
+　（手から投げたこまを紐で空中キャッチしてもよい）
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+1周後にこまが紐から離れた瞬間`,
+
+  "リフティング〜直大車輪": `【点数】6
+【スタート技】
+【審査基準】
+・最初のリフティングについて：
+　投げてから紐にかけるまでに脚以外の部分に触れない
+・その後、身体の周りを大車輪で1周する
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+こまが身体の周りを1周し切った瞬間`,
+
+  "ピルエット（ひものせ〜ひものせ）": `【点数】6
+【審査基準】
+・身体の正面でこまを跳ね上げ、一回転し、再び身体の正面で取る
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "ザリガニ釣り": `【点数】6
+【審査基準】
+・チョップスティック状態から始める
+・こまがつり下がっている時、紐は1本だけを掴んでいる
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐の上で保持された瞬間`,
+
+  "片白刃": `【点数】6
+【審査基準】
+・紐は片手で持つ
+・紐を片方だけ離す
+・紐を離した手と、紐を掴み直す手は同じ手である
+【成功判定（フィニッシュ／コンボ中）】
+一度離した紐を同じ手で掴み直し、こまが紐の上に乗っていることが確認された瞬間`,
+
+  "登り龍（5周）": `【点数】6
+【審査基準】
+・こまの回転で紐を巻き込む力で登ること
+・こまを振り回して動かしているものは失敗
+・5周回り切ること
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+5周回り切った瞬間`,
+
+  // 7点技
+  "鎖鎌": `【点数】7
+【審査基準】
+・紐は片手で輪になっている
+・紐は頭上で回っている
+・紐は3周以上回っている
+・こまが紐にかかった後、こまが身体の周りを1周している
+・サディスティック状態になっていない
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+こまが身体の周りを1周し切った瞬間`,
+
+  "夜叉車": `【点数】7
+【審査基準】
+・5周を淀みなく連続して回す（1周ごとに止めると失敗）
+・体の左右を交互に回している
+・紐が短すぎるものは失敗
+・こまは肘より大きい軌道で振り回す
+【成功判定（フィニッシュ／コンボ中）】
+5周後に紐が地面に対して垂直に向いた瞬間`,
+
+  "首切り〜腰切り〜脚切り": `【点数】7
+【審査基準】
+・紐は片手で束ねた後に放し、片手で掴み直す
+・掴み直す際に、紐に手が一切触れていない時間が存在すること
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+脚切りの後に紐を掴んだ瞬間`,
+
+  "忍者": `【点数】7
+【審査基準】
+・こまが登る際、紐が背面にあること
+・こまが伝う紐の長さは腰から肩の長さ以上
+【成功判定（フィニッシュ／コンボ中）】
+登ったこまが上の手に触れた瞬間`,
+
+  "脚くぐし in out": `【点数】7
+【審査基準】
+・イン→アウトの順に連続して行う
+・インの際はリキャプチャー、アウトの際はドラムビートでかける
+・こまが左回転なら右脚、右回転なら左脚を使う
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "かまいたち3セット in 両手へび": `【点数】7
+【審査基準】
+・両手へびは左右合わせて5周する
+・かまいたちは3セット行う
+・かまいたちの直前にメリーゴーランドなど余分なトリックを入れない
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+こまが腕に巻かれた紐を回り切った瞬間`,
+
+  "レール": `【点数】7
+【審査基準】
+・紐の形の作り方は問わない
+・スタートはこまの上から紐をかけて始める
+【成功判定（フィニッシュ）】
+こまが腕に巻かれた紐を回り切って、両腕の間に位置した瞬間
+【成功判定（コンボ中）】
+同上`,
+
+  "むち3": `【点数】7
+【審査基準】
+・紐の片方は手から離れた状態でこまに紐が当たること
+・紐が当たった後、紐を持っている手と同じ手で逆側の紐を掴む
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "ゼロスタウィップ": `【点数】7
+【スタート技】
+【審査基準】
+・こまに回転をかける手と、ウィップをする手が別であること
+・紐を半周以上回してかけている
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "リリーススタート": `【点数】7
+【スタート技】
+【審査基準】
+・こまの軸に紐を半周以上巻きつけてはいけない
+・こまに回転をかける手と、紐を掴む手は同じ手である
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "ストリングトルネード": `【点数】7
+【審査基準】
+・ラップ状態（こまの軸に紐が一周巻かれた状態）で行う
+・こまが紐に重力で乗っていない時間に、紐がこまの周りを1周以上する
+・最後は引き上げて紐でこまをキャッチする
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "オロチ": `【点数】7
+【審査基準】
+・右腕に3回以上、首に1回、左腕に2回以上巻く
+・左腕に3回以上巻いた場合は、2周分通った時点でオロチ成立とみなす
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+こまが腕に巻かれた紐を回り切った瞬間`,
+
+  // 8点技
+  "同時2個空中手のせ": `【点数】8
+【スタート技】
+【審査基準】
+・2個のこまのどちらも、紐が解けることで回転が始まっている
+・こまを投げる際は一挙動で行う
+【成功判定（フィニッシュ／コンボ中）】
+2つのこまが回った状態で手に乗った瞬間`,
+
+  "くるりんぱ（3回）": `【点数】8
+【審査基準】
+・紐の巻き方は適切であること
+・連続で3回行う
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+3周後にこまが紐から離れた瞬間`,
+
+  "背面ムチ": `【点数】8
+【審査基準】
+・こまを上げる位置は身体の前側
+・ムチが成立する位置は背面
+・サディスティック状態になっていない
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "かまいたち3セット〜太陽系1周": `【点数】8
+【審査基準】
+・「両手渦潮」になっていないこと
+・かまいたちを3セット適切に行う
+・途中で誤った軌道を通った場合、その時点で失敗
+・太陽系を1周する
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+こまが腕に巻いた紐を周り切った瞬間`,
+
+  "縦へび4周〜灯籠": `【点数】8
+【審査基準】
+・こまの角度が適切（水平になっていない）
+・腕の周りを4周している
+・縦へびと灯籠の間に余分なトリックを入れない
+【成功判定（フィニッシュ／コンボ中）】
+こまが親指の上に乗り、親指のみに触れた瞬間`,
+
+  "歯車": `【点数】8
+【審査基準】
+・紐の軌道が地面に対して垂直になっていない
+　（白刃取りになっているものは不可）
+【成功判定（フィニッシュ／コンボ中）】
+浮いた紐を掴んだ瞬間（かつこまが紐に乗っていること）`,
+
+  "二回転白刃取り": `【点数】8
+【審査基準】
+・紐は2周している
+・投げ上げた際に紐から両手が離れている
+【成功判定（フィニッシュ／コンボ中）】
+浮いた紐を掴んだ瞬間（かつこまが紐に乗っていること）`,
+
+  "砂時計〜裏燈籠": `【点数】8
+【審査基準】
+・軸の両端以外でこまに触れていない
+・こまが裏返った時に親指がこまから離れている
+・裏燈籠の際はこまを一度空中に浮かせる
+【成功判定（フィニッシュ／コンボ中）】
+こまが親指の上に乗り、親指のみに触れた瞬間`,
+
+  "Vレール（2回）": `【点数】8
+【審査基準】
+・紐の形の作り方は問わない
+・スタートは空中大車輪のかけ方で紐をかけて始める
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+こまが腕に巻かれた紐を回り切って、両腕の間に位置した瞬間`,
+
+  "背面チョップスティック": `【点数】8
+【審査基準】
+・紐の形が適切である
+・こまは空中に浮いた状態からチョップスティックの紐の上に乗る
+・背面で行う
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "侍ウィップ": `【点数】8
+【審査基準】
+・一度左手で紐を持つ
+・紐を弾く動きでこまに紐を当て、輪の中にこまを入れる
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "侍キャッチ": `【点数】8
+【スタート技】
+【審査基準】
+・こまが空中に浮いている間に紐で輪を作り、そこにこまを入れる
+・こまが空中から紐にかかるまで、身体に触れない
+・こまは身体の周りを1周している
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+こまが身体の周りを1周し切った瞬間`,
+
+  "ダイレクトむち3": `【点数】8
+【スタート技】
+【審査基準】
+・紐の片方の端が手から離れている間に、紐とこまが触れる
+・片手のみで行う
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "へび2往復": `【点数】8
+【審査基準】
+・こま本体に紐が1周巻かれている
+・腕に紐が3周以上巻かれている
+・2往復目も、へびが3周以上回っている
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+こまが腕に巻かれた紐を回り切った瞬間`,
+
+  "脚下オープンウィップ": `【点数】8
+【審査基準】
+・紐を束ねずに持っている
+・脚の下でこまを取る
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "ニシキヘビ": `【点数】8
+【審査基準】
+・こま本体に紐が1周巻かれている
+・右手1周→首→右手1周の順に紐が巻かれている
+・右手に戻ってきた際、首に巻いた紐の「下」を通る
+　（輪の中を通るのは失敗）
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+こまが腕に巻かれた紐を回り切った瞬間`,
+
+  "背面燈籠": `【点数】8
+【スタート技】
+【審査基準】
+・親指以外がこまに触れていない
+・乗せ方は問わない
+・手のひらを経由しない
+【成功判定（フィニッシュ／コンボ中）】
+こまが親指の上に乗り、親指のみに触れた瞬間`,
+
+  // 9点技
+  "リュウグウノツカイ": `【点数】9
+【審査基準】
+・紐の身体への巻き方が適切である
+・最後は足の間を後ろからこまを投げ上げる
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+足の間からこまを投げ上げた瞬間`,
+
+  "ウロボロス": `【点数】9
+【審査基準】
+・紐は右手に3回以上、左手に2回以上巻く
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+こまが腕に巻かれた紐を回り切った瞬間`,
+
+  "スラックライン": `【点数】9
+【審査基準】
+・紐2本にこまが均等に乗っている（綱渡りのように片側寄りは不可）
+・こまは空中から紐2本のすき間に入っている
+・こまを空中に投げ上げる場合、紐に乗った状態から投げ上げる
+　（手から直接投げ上げるのは不可）
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+こまが紐2本の間に入った瞬間`,
+
+  "背面オープンウィップ": `【点数】9
+【審査基準】
+・こまを上げる位置は身体の前側
+・ムチが成立する位置は背面
+・紐は束ねずに持つ
+・サディスティック状態になっていない
+・紐の左手側でこまを取る（リキャプ状態）
+・背面で行う
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "背面両手へび": `【点数】9
+【審査基準】
+・紐は右手に3回以上、左手に2回以上巻く
+・背面で行う
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+こまが腕に巻かれた紐を回り切った瞬間`,
+
+  "サイドワインダー2.0": `【点数】9
+【スタート技】
+【審査基準】
+・こまを投げ出して手に戻るまでの間に、腕に紐を2周巻いて形を完成させる
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+こまが腕に巻かれた紐を回り切った瞬間`,
+
+  "両面ちょんかけ": `【点数】9
+【審査基準】
+・右→左の順で行う
+・右側：右手でこまの上から紐をかける
+・左側：左手でこまの上から紐をかける
+・脚の左右は問わない
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "夜刀神": `【点数】9
+【審査基準】
+・紐を適切に巻くこと
+【成功判定（フィニッシュ／コンボ中）】
+こまが手に乗った瞬間`,
+
+  "クエンティン・ウィップ": `【点数】9
+【審査基準】
+・ウィップの位置が適切である
+・こまは身体の上を通る
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "渦潮〜燈籠": `【点数】9
+【審査基準】
+・渦潮は1往復行う
+・渦潮からこまを空中に浮かせ、直接親指の腹に乗せる
+【成功判定（フィニッシュ／コンボ中）】
+こまが親指の上に乗り、親指のみに触れた瞬間`,
+
+  "4DEX": `【点数】9
+【審査基準】
+・こまの周りを紐が4周している
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "フットクラッチ": `【点数】9
+【審査基準】
+・紐をキャッチする時、脚以外で紐に触れていない
+・紐をキャッチする際には脚で挟む
+　（紐が脚に乗っているだけの状態は不可）
+【成功判定（フィニッシュ／コンボ中）】
+紐を脚で挟んだ瞬間（かつこまが紐に乗っていること）`,
+
+  "フットトス蛇": `【点数】9
+【審査基準】
+・フットストールへの入り方は問わない
+【成功判定（フィニッシュ）】
+こまが手に乗った瞬間
+【成功判定（コンボ中）】
+こまが腕に巻かれた紐を回り切った瞬間`,
+
+  "ダブルピルエット白刃取り": `【点数】9
+【審査基準】
+・投げ上げた際に紐から両手が離れている
+・ピルエットは2周回り切る
+【成功判定（フィニッシュ／コンボ中）】
+浮いた紐を掴んだ瞬間（かつこまが紐に乗っていること）`,
+
+  "アームグラインドウィップ": `【点数】9
+【審査基準】
+・こまは指から前腕の真ん中までの距離を、最低でも走る
+・ウィップは裏かけで行う
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "背面ダイレクトむち3": `【点数】9
+【スタート技】
+【審査基準】
+・紐の片方の端が手から離れている間に、紐とこまが触れる
+・片手のみで行う
+・背面で行う
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  // 10点技
+  "ダイレク燈籠": `【点数】10
+【スタート技】
+【審査基準】
+・つばめ返しから一発で親指の上にこまが乗る
+・親指以外の体の箇所がこまに触れた場合は失敗
+【成功判定（フィニッシュ／コンボ中）】
+こまが親指に乗った瞬間`,
+
+  "2個うずしお3回": `【点数】10
+【審査基準】
+・2個のこまを回す方法は問わない
+・上下3回行う
+・手のひらから行う
+【成功判定（フィニッシュ／コンボ中）】
+2つのこまが回った状態で手に乗った瞬間`,
+
+  "てじなーにゃむち": `【点数】10
+【審査基準】
+・こまを跳ね上げた勢いで飛んだ紐を掴み、輪にする
+・輪になった紐にこまが入る
+・こまが浮いてから紐に乗るまで、左手は動かさない
+・右手は水平に動かす
+　（右手を振って紐の軌道を輪のように操作してはいけない）
+【成功判定（フィニッシュ／コンボ中）】
+こまが紐に乗った瞬間`,
+
+  "ヤトボロス": `【点数】10
+【審査基準】
+・紐を適切に巻くこと
+【成功判定（フィニッシュ／コンボ中）】
+こまが手に乗った瞬間`
+};
+
 /* ================== DOM参照 ================== */
 const totalBar = document.getElementById('total-bar');
 const chipsWrap = document.getElementById('chips');
@@ -339,6 +1385,12 @@ const finalSpan = document.getElementById('final-total');
 const searchInput = document.getElementById('trick-search');
 const searchHits = document.getElementById('search-hits');
 const toastEl = document.getElementById('toast');
+
+/* 判定モーダル */
+const judgeModal  = document.getElementById('judge-modal');
+const judgeTitle  = document.getElementById('judge-title');
+const judgeText   = document.getElementById('judge-text');
+const judgeClose  = document.getElementById('judge-close');
 
 /* ================== ユーティリティ ================== */
 const showToast = (msg, ms=1800)=>{
@@ -367,6 +1419,7 @@ function makeScoreItem(pt, name){
       <span class="tech-pt-label">${pt}点技</span>
     </div>
     <div class="tech-controls">
+      <button type="button" class="judge-btn" data-name="${name}">判定基準</button>
       <label><input type="checkbox" class="multi">1.5倍</label>
       <label><input type="checkbox" class="chk" data-pt="${pt}" data-name="${name}">使用</label>
     </div>`;
@@ -381,6 +1434,7 @@ function makePreItemCheck(pt, name){
       <span class="tech-pt-label">${pt}点技</span>
     </div>
     <div class="tech-controls">
+      <button type="button" class="judge-btn" data-name="${name}">判定基準</button>
       <label><input type="checkbox" class="pre-chk" data-pt="${pt}" data-name="${name}">予選</label>
     </div>`;
   return item;
@@ -390,7 +1444,7 @@ function buildLists(){
   scoreListWrap.innerHTML='';
   preTechWrap.innerHTML='';
   Object.keys(tricks).forEach(pt=>{
-    /* 決勝側：点数ごとに details で折りたたみ */
+    /* 決勝側 */
     const sec1 = document.createElement('details');
     sec1.className = 'pt-group';
     sec1.open = true;
@@ -407,7 +1461,7 @@ function buildLists(){
     tricks[pt].forEach(n=> sec1.appendChild(makeScoreItem(pt, n)));
     scoreListWrap.appendChild(sec1);
 
-    /* 予選側：同様に点数ごとに折りたたみ */
+    /* 予選側 */
     const sec2 = document.createElement('details');
     sec2.className = 'pt-group';
     sec2.open = true;
@@ -427,6 +1481,28 @@ function buildLists(){
 }
 buildLists();
 
+/* ================== 判定基準ポップアップ ================== */
+function openJudgePopup(name){
+  judgeTitle.textContent = name;
+  const text = judgeCriteria[name];
+  judgeText.textContent = text || "この技の判定基準はまだ登録されていません。";
+  judgeModal.style.display = 'flex';
+}
+function closeJudgePopup(){
+  judgeModal.style.display = 'none';
+}
+
+/* クリックイベント委譲 */
+document.addEventListener('click',(e)=>{
+  if(e.target.classList.contains('judge-btn')){
+    const name = e.target.dataset.name;
+    openJudgePopup(name);
+  }
+  if(e.target === judgeClose || e.target.dataset.close === "1"){
+    closeJudgePopup();
+  }
+});
+
 /* ================== 計算 ================== */
 function getPreScore(){
   let v=parseFloat(preInput.value);
@@ -443,33 +1519,27 @@ function updateBarColor(total){
   const chipEls = chipsWrap.querySelectorAll('.total-chip');
 
   if(total>=2000){
-    // バーは黒
     totalBar.style.background = "black";
-    // 総合計は白
     finalSpan.style.color = "#fff";
-    // いったん全チップ白
     chipEls.forEach(c => c.style.color = "#fff");
 
-    // 例外：技数／予選／FMD／基礎 は黒
     const ids = ["selected-count","pre-total","fmd-total","base-total"];
     ids.forEach(id=>{
       const chip = document.getElementById(id)?.closest(".total-chip");
       if(chip) chip.style.color = "#000";
     });
   } else {
-    // 通常色
     finalSpan.style.color = "#000";
     chipEls.forEach(c => c.style.color = "#000");
 
-    if(total>=1900) totalBar.style.background = "#d60000";      // 赤
-    else if(total>=1800) totalBar.style.background = "#6f2dbd"; // 濃紫
-    else if(total>=1700) totalBar.style.background = "#ff7a00"; // 濃オレンジ
+    if(total>=1900) totalBar.style.background = "#d60000";
+    else if(total>=1800) totalBar.style.background = "#6f2dbd";
+    else if(total>=1700) totalBar.style.background = "#ff7a00";
     else if(total>=1600) totalBar.style.background = "dodgerblue";
-    else if(total>=1500) totalBar.style.background = "#3dbb3d"; // 緑
+    else if(total>=1500) totalBar.style.background = "#3dbb3d";
     else totalBar.style.background = "rgba(240,240,240,.96)";
   }
 
-  // しきい値演出
   const thresholds=[1500,1600,1700,1800,1900,2000];
   const crossed = thresholds.find(t=> total>=t && lastThreshold < t);
   if(crossed!=null){
@@ -507,7 +1577,7 @@ function calcTotal(){
   finalSpan.textContent=formatScore(total);
 
   updateBarColor(total);
-  saveState(); // 自動保存
+  saveState();
 }
 
 /* 監視 */
@@ -562,13 +1632,10 @@ function orderLiTemplate(pt,name){
       <button class="order-btn" data-act="down">↓</button>
       <button class="order-btn order-btn-del" data-act="del">✕</button>
     </div>`;
-  // 長押し削除
   let pressT=null;
   li.querySelector('[data-act="del"]').addEventListener('touchstart',()=>{ pressT=setTimeout(()=>{ li.remove(); rebuildFinalsList(); showToast("削除しました"); },600); },{passive:true});
   li.querySelector('[data-act="del"]').addEventListener('touchend',()=>{ if(pressT){ clearTimeout(pressT); pressT=null; showToast("長押しで削除",800); }});
-  li.querySelector('[data-act="del"]').addEventListener('mousedown',e=>{
-    pressT=setTimeout(()=>{ li.remove(); rebuildFinalsList(); showToast("削除しました"); },600);
-  });
+  li.querySelector('[data-act="del"]').addEventListener('mousedown',()=>{ pressT=setTimeout(()=>{ li.remove(); rebuildFinalsList(); showToast("削除しました"); },600); });
   ['mouseup','mouseleave'].forEach(ev=>li.querySelector('[data-act="del"]').addEventListener(ev,()=>{ if(pressT){clearTimeout(pressT); pressT=null;} }));
   return li;
 }
@@ -635,7 +1702,6 @@ function mkPreOrderItem(pt,name,round){
       <button class="order-btn order-btn-move" data-act="${move}">${label}</button>
       <button class="order-btn order-btn-del" data-act="del">✕</button>
     </div>`;
-  // 長押し削除
   let t=null, delBtn=li.querySelector('[data-act="del"]');
   const doDel=()=>{ li.remove(); updatePreSummary(); showToast("削除しました"); };
   delBtn.addEventListener('touchstart',()=>{ t=setTimeout(doDel,600); },{passive:true});
@@ -773,12 +1839,10 @@ document.getElementById("btn-print").addEventListener("click",()=>{
 /* ================== CSV 入出力 ================== */
 function exportCSV(){
   const rows=[["type","name","point","mult15","round","order"]];
-  // 決勝（順序）
   [...finalsList.querySelectorAll(".order-item .order-name")].forEach((n,i)=>{
     const m=n.textContent.match(/^\[(\d+)点]\s*(.+)$/); if(!m) return;
     rows.push(["final", m[2], m[1], "", "", i+1]);
   });
-  // 予選（ラウンド・順序）
   [...list1.querySelectorAll(".order-name")].forEach((n,i)=>{
     const m=n.textContent.match(/^\[(\d+)点]\s*(.+)$/); if(!m) return;
     rows.push(["prelim", m[2], m[1], "", 1, i+1]);
@@ -787,7 +1851,6 @@ function exportCSV(){
     const m=n.textContent.match(/^\[(\d+)点]\s*(.+)$/); if(!m) return;
     rows.push(["prelim", m[2], m[1], "", 2, i+1]);
   });
-  // 決勝スコアの選択＋1.5倍情報
   document.querySelectorAll(".chk").forEach(chk=>{
     if(chk.checked){
       const name=chk.dataset.name, pt=chk.dataset.pt;
@@ -809,7 +1872,6 @@ document.getElementById("csv-import").addEventListener("change",async(e)=>{
   const lines = text.split(/\r?\n/).filter(Boolean);
   const header = lines.shift()?.split(',').map(s=>s.replace(/^"|"$/g,'').replace(/""/g,'"'))||[];
   const idx=(k)=>header.indexOf(k);
-  // 初期化してから反映
   document.querySelectorAll(".chk,.multi,.pre-chk").forEach(c=>c.checked=false);
   list1.innerHTML=""; list2.innerHTML=""; finalsList.innerHTML="";
 
@@ -855,7 +1917,6 @@ function loadState(){
       const f=s.prechecks?.find(x=>x.n===c.dataset.name && x.p==c.dataset.pt);
       if(f){ c.checked=!!f.u; }
     });
-    // 再構築（簡易）
     finalsList.innerHTML="";
     (s.finals||[]).forEach(txt=>{
       const m=txt.match(/^\[(\d+)点]\s*(.+)$/); if(m) finalsList.appendChild(orderLiTemplate(m[1], m[2]));
@@ -863,9 +1924,9 @@ function loadState(){
     list1.innerHTML=""; (s.p1||[]).forEach(txt=>{ const m=txt.match(/^\[(\d+)点]\s*(.+)$/); if(m) list1.appendChild(mkPreOrderItem(m[1],m[2],1)); });
     list2.innerHTML=""; (s.p2||[]).forEach(txt=>{ const m=txt.match(/^\[(\d+)点]\s*(.+)$/); if(m) list2.appendChild(mkPreOrderItem(m[1],m[2],2)); });
     rebuildFinalsList(); updatePreSummary();
-  }catch{ /* ignore */ }
+  }catch{}
 }
-window.addEventListener("DOMContentLoaded",()=>{ calcTotal(); loadState(); });
+window.addEventListener("DOMContentLoaded",()=>{ loadState(); calcTotal(); });
 
 /* ================== プリセット保存・読込 ================== */
 const FINAL_PRESET_KEY   = "tsubame2025_final_preset";
@@ -908,7 +1969,7 @@ document.getElementById("load-finals-preset").addEventListener("click",()=>{
   }
 });
 
-/* 予選プリセット（第1R・第2R） */
+/* 予選プリセット */
 document.getElementById("save-prelims-preset").addEventListener("click",()=>{
   const r1 = serializeOrderList(list1);
   const r2 = serializeOrderList(list2);
@@ -944,9 +2005,8 @@ document.getElementById("load-prelims-preset").addEventListener("click",()=>{
   }
 });
 
-/* 全体プリセット（決勝スコア＋決勝編成＋予選編成＋予選点） */
+/* 全体プリセット */
 document.getElementById("save-overall-preset").addEventListener("click",()=>{
-  // 最新状態を保存してから、そのスナップショットをコピー
   saveState();
   const raw = localStorage.getItem("tsubame2025");
   if(!raw){
@@ -964,7 +2024,6 @@ document.getElementById("load-overall-preset").addEventListener("click",()=>{
     return;
   }
   try{
-    // 現在のUIを初期化してから、全体プリセットを現在状態に上書き
     document.querySelectorAll(".chk,.multi,.pre-chk").forEach(c=>c.checked=false);
     list1.innerHTML=""; list2.innerHTML=""; finalsList.innerHTML="";
     localStorage.setItem("tsubame2025", raw);
@@ -978,7 +2037,7 @@ document.getElementById("load-overall-preset").addEventListener("click",()=>{
   }
 });
 
-/* ================== ツアー（初回のみ） ================== */
+/* ================== ツアー ================== */
 const tour=document.getElementById('tour');
 const tourHide=()=>tour.style.display='none';
 const tourNever=()=>{ localStorage.setItem('tsubame2025_tour','1'); tourHide(); };
@@ -986,8 +2045,7 @@ document.getElementById('tour-hide').addEventListener('click',tourHide);
 document.getElementById('tour-never').addEventListener('click',tourNever);
 if(!localStorage.getItem('tsubame2025_tour')){ setTimeout(()=>{ tour.style.display='flex'; }, 300); }
 
-/* ================== PWA 簡易対応（オフライン） ================== */
-// manifest を動的生成
+/* ================== PWA 簡易対応 ================== */
 (function(){
   const manifest = {
     name:"ツバメカップ2025 技チェック＆編成",
@@ -1003,7 +2061,6 @@ if(!localStorage.getItem('tsubame2025_tour')){ setTimeout(()=>{ tour.style.displ
   link.rel="manifest"; link.href=url; document.head.appendChild(link);
 })();
 
-// Service Worker（このページをキャッシュ）
 if('serviceWorker' in navigator){
   const swCode = `
   const CACHE='tsubame2025-v1';
