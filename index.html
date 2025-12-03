@@ -62,7 +62,7 @@ button{border:none;border-radius:8px;cursor:pointer}
 /* ★ 点数ごとの行頭ラベル（色付き） */
 .section-title{
   display:inline-block;
-  margin:6px 0 4px;
+  margin:4px 0;
   padding:3px 9px;
   border-radius:999px;
   font-size:13px;
@@ -78,6 +78,25 @@ button{border:none;border-radius:8px;cursor:pointer}
 .section-title.pt-8{background:#e0f2f1;border-left:4px solid #00796b;}
 .section-title.pt-9{background:#fff8e1;border-left:4px solid #ffb300;}
 .section-title.pt-10{background:#fce4ec;border-left:4px solid #c2185b;}
+
+/* ★ 点数ごとの折りたたみ（details） */
+.pt-group{
+  margin:2px 0 4px;
+}
+.pt-group > summary{
+  list-style:none;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.pt-group > summary::-webkit-details-marker{
+  display:none;
+}
+.pt-group-arrow{
+  font-size:12px;
+  opacity:.6;
+}
 
 .tech-item{
   background:#fff;margin:6px 0;padding:10px;border-radius:8px;
@@ -371,19 +390,37 @@ function buildLists(){
   scoreListWrap.innerHTML='';
   preTechWrap.innerHTML='';
   Object.keys(tricks).forEach(pt=>{
-    const sec1 = document.createElement('div');
-    const sec2 = document.createElement('div');
-
-    const title1 = document.createElement('div');
+    /* 決勝側：点数ごとに details で折りたたみ */
+    const sec1 = document.createElement('details');
+    sec1.className = 'pt-group';
+    sec1.open = true;
+    const sum1 = document.createElement('summary');
+    const arrow1 = document.createElement('span');
+    arrow1.className = 'pt-group-arrow';
+    arrow1.textContent = '▼';
+    const title1 = document.createElement('span');
     title1.className='section-title pt-'+pt;
     title1.textContent = `${pt}点技`;
-    const title2 = title1.cloneNode(true);
-
-    sec1.appendChild(title1);
+    sum1.appendChild(arrow1);
+    sum1.appendChild(title1);
+    sec1.appendChild(sum1);
     tricks[pt].forEach(n=> sec1.appendChild(makeScoreItem(pt, n)));
     scoreListWrap.appendChild(sec1);
 
-    sec2.appendChild(title2);
+    /* 予選側：同様に点数ごとに折りたたみ */
+    const sec2 = document.createElement('details');
+    sec2.className = 'pt-group';
+    sec2.open = true;
+    const sum2 = document.createElement('summary');
+    const arrow2 = document.createElement('span');
+    arrow2.className = 'pt-group-arrow';
+    arrow2.textContent = '▼';
+    const title2 = document.createElement('span');
+    title2.className='section-title pt-'+pt;
+    title2.textContent = `${pt}点技`;
+    sum2.appendChild(arrow2);
+    sum2.appendChild(title2);
+    sec2.appendChild(sum2);
     tricks[pt].forEach(n=> sec2.appendChild(makePreItemCheck(pt, n)));
     preTechWrap.appendChild(sec2);
   });
