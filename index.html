@@ -14,6 +14,9 @@
   --hit-bg:#fff6cc;
   --hit-bd:#ffcc66;
   --toast:#323232;
+
+  --soft:#f7fbff;
+  --line:#e6eefb;
 }
 *{box-sizing:border-box}
 body{
@@ -26,6 +29,7 @@ body{
 h1{font-size:20px;margin:4px 0 6px}
 button{border:none;border-radius:8px;cursor:pointer}
 
+/* ===== 上部固定スコアバー ===== */
 .total-bar{
   position:fixed;top:0;left:0;right:0;z-index:200;
   padding:6px 10px;background:rgba(240,240,240,.96);
@@ -41,14 +45,17 @@ button{border:none;border-radius:8px;cursor:pointer}
 .total-buttons{display:flex;gap:6px}
 .total-buttons button{flex:1;padding:6px 8px;font-size:12px}
 
+/* ===== モード ===== */
 .mode-bar{display:flex;gap:6px;margin:8px 0 10px;flex-wrap:wrap}
 .mode-btn{flex:1;min-width:90px;padding:8px 4px;font-size:13px;border-radius:8px;border:1px solid var(--blue);background:#fff;color:var(--blue)}
 .mode-btn.active{background:var(--blue);color:#fff}
 
+/* ===== 検索 ===== */
 .search-bar{display:flex;align-items:center;gap:8px;margin:6px 0 10px}
 .search-input{flex:1;padding:8px 10px;font-size:14px;border-radius:8px;border:1px solid #cfcfcf;background:#fff}
 .search-hits{font-size:12px;opacity:.7;white-space:nowrap}
 
+/* ===== セクション ===== */
 .section{
   margin-top:10px;border-radius:10px;overflow:hidden;border:1px solid #e5efff;background:#fff
 }
@@ -59,7 +66,7 @@ button{border:none;border-radius:8px;cursor:pointer}
 .section[open] summary{background:#dff0ff}
 .section-content{padding:6px 10px}
 
-/* 点数ラベル */
+/* ===== 点数ラベル ===== */
 .section-title{
   display:inline-block;
   margin:4px 0;
@@ -79,7 +86,7 @@ button{border:none;border-radius:8px;cursor:pointer}
 .section-title.pt-9{background:#fff8e1;border-left:4px solid #ffb300;}
 .section-title.pt-10{background:#fce4ec;border-left:4px solid #c2185b;}
 
-/* 点数ごとの折りたたみ */
+/* ===== 点数ごとの折りたたみ ===== */
 .pt-group{
   margin:2px 0 4px;
 }
@@ -88,16 +95,25 @@ button{border:none;border-radius:8px;cursor:pointer}
   cursor:pointer;
   display:flex;
   align-items:center;
-  gap:6px;
+  gap:8px;
 }
-.pt-group > summary::-webkit-details-marker{
-  display:none;
-}
-.pt-group-arrow{
-  font-size:12px;
-  opacity:.6;
-}
+.pt-group > summary::-webkit-details-marker{display:none}
+.pt-group-arrow{font-size:12px;opacity:.6}
 
+/* 全動画ボタン */
+.full-video-btn{
+  margin-left:auto;
+  font-size:11px;
+  padding:4px 8px;
+  border-radius:999px;
+  border:1px solid #b9d8ff;
+  background:#f1f7ff;
+  color:#0b4aa6;
+  white-space:nowrap;
+}
+.full-video-btn:hover{background:#e3f0ff}
+
+/* ===== 技アイテム ===== */
 .tech-item{
   background:#fff;margin:6px 0;padding:10px;border-radius:8px;
   display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid transparent
@@ -109,7 +125,7 @@ button{border:none;border-radius:8px;cursor:pointer}
 .tech-controls label{display:inline-flex;align-items:center;gap:6px;padding:6px 8px;border-radius:8px;border:1px solid #ddd;background:#fafafa}
 .tech-controls input[type=checkbox]{width:18px;height:18px}
 
-/* 判定基準ボタン */
+/* 動画・判定ボタン */
 .judge-btn{
   font-size:11px;
   padding:4px 8px;
@@ -119,10 +135,9 @@ button{border:none;border-radius:8px;cursor:pointer}
   color:#0d47a1;
   white-space:nowrap;
 }
-.judge-btn:hover{
-  background:#bbdefb;
-}
+.judge-btn:hover{background:#bbdefb}
 
+/* ===== 予選点入力 ===== */
 .pre-box{margin-top:14px;background:#e6f4ff;padding:10px;border-radius:10px;font-size:14px}
 .pre-input{width:90px;padding:6px 8px;font-size:16px;border-radius:8px;border:1px solid #cfcfcf;background:#fff}
 
@@ -131,6 +146,7 @@ button{border:none;border-radius:8px;cursor:pointer}
 .mode-section{display:none}
 .mode-section.active{display:block}
 
+/* ===== 編成リスト ===== */
 .order-box{margin-top:10px;background:#fff;padding:8px;border-radius:10px;border:1px solid #ddd}
 .order-box-title{font-size:13px;margin:4px 4px 6px 4px}
 .order-list{list-style:none;padding:0;margin:0}
@@ -145,6 +161,7 @@ button{border:none;border-radius:8px;cursor:pointer}
 .order-btn-move{border-color:var(--blue);background:#e2f0ff;color:#004a99}
 .order-item.dragging{opacity:.6}
 
+/* ===== 下部ミニメニュー ===== */
 .mini-nav{
   position:fixed;left:0;right:0;bottom:0;z-index:180;background:#fff;
   box-shadow:0 -1px 6px rgba(0,0,0,.15); display:flex; justify-content:space-around; padding:6px 4px
@@ -156,6 +173,7 @@ button{border:none;border-radius:8px;cursor:pointer}
 .mini-btn-icon{font-size:18px}
 .mini-btn.active{color:var(--blue)}
 
+/* ===== トースト ===== */
 .toast{
   position:fixed;left:50%;bottom:100px;transform:translateX(-50%);
   background:var(--toast);color:#fff;padding:10px 14px;border-radius:999px;font-size:13px;
@@ -163,17 +181,11 @@ button{border:none;border-radius:8px;cursor:pointer}
 }
 .toast.show{opacity:.95}
 
-@media print{
-  .total-bar,.mini-nav,.search-bar,.mode-bar{display:none!important}
-  body{padding-top:0;padding-bottom:0}
-  .order-box{page-break-inside:avoid}
-}
-
-/* しきい値ポップ */
+/* ===== しきい値ポップ ===== */
 .pop{animation:pop .25s ease}
 @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
 
-/* ツアー */
+/* ===== ツアー ===== */
 .tour{
   position:fixed; inset:0; background:rgba(0,0,0,.45); display:none; align-items:center; justify-content:center; z-index:350
 }
@@ -185,8 +197,51 @@ button{border:none;border-radius:8px;cursor:pointer}
 .tour-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
 .tour-actions button{padding:8px 12px;font-size:14px}
 
-/* 判定基準モーダル */
-.judge-modal{
+/* ===== プリセットUI ===== */
+.preset-box{
+  margin-top:10px;
+  background:var(--soft);
+  border:1px solid var(--line);
+  padding:10px;
+  border-radius:10px;
+}
+.preset-row{
+  display:flex;
+  gap:6px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.preset-row select{
+  padding:6px 8px;
+  font-size:12px;
+  border-radius:8px;
+  border:1px solid #cfd8ea;
+  background:#fff;
+}
+.preset-row input{
+  flex:1;
+  min-width:140px;
+  padding:6px 8px;
+  font-size:12px;
+  border-radius:8px;
+  border:1px solid #cfd8ea;
+  background:#fff;
+}
+.preset-row button{
+  padding:7px 10px;
+  font-size:12px;
+  border-radius:8px;
+  border:1px solid #bcd3ff;
+  background:#fff;
+}
+.preset-hint{
+  font-size:11px;
+  opacity:.7;
+  margin-top:6px;
+}
+
+/* ===== 統合メディアモーダル ===== */
+.media-modal{
   position:fixed;
   inset:0;
   z-index:260;
@@ -194,43 +249,153 @@ button{border:none;border-radius:8px;cursor:pointer}
   align-items:center;
   justify-content:center;
 }
-.judge-overlay{
+.media-overlay{
   position:absolute;
   inset:0;
   background:rgba(0,0,0,.4);
 }
-.judge-dialog{
+.media-dialog{
   position:relative;
   z-index:1;
-  width:min(480px,92vw);
-  max-height:80vh;
+  width:min(560px,94vw);
+  max-height:86vh;
   background:#fff;
-  border-radius:12px;
-  box-shadow:0 8px 24px rgba(0,0,0,.3);
+  border-radius:14px;
+  box-shadow:0 10px 28px rgba(0,0,0,.3);
   display:flex;
   flex-direction:column;
+  overflow:hidden;
 }
-.judge-header{
+.media-header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:8px 12px;
+  padding:10px 12px;
   border-bottom:1px solid #eee;
-  font-size:14px;
+  gap:8px;
+}
+.media-title{
+  font-size:14px;font-weight:800;
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.media-pt-chip{
+  font-size:11px;
+  padding:2px 8px;
+  border-radius:999px;
+  background:#eef6ff;
+  border:1px solid #cfe3ff;
   font-weight:700;
 }
-#judge-close{
-  border:none;
-  background:transparent;
-  font-size:16px;
-  padding:4px 6px;
-  cursor:pointer;
+#media-close{
+  border:none;background:transparent;font-size:18px;padding:4px 6px;cursor:pointer
 }
-.judge-body{
-  padding:10px 12px;
-  font-size:14px;
-  line-height:1.6;
+.media-body{
+  padding:0;
   overflow-y:auto;
+}
+.media-video{
+  padding:10px 12px 0 12px;
+}
+.media-player-shell{
+  border:1px solid #e6e6e6;
+  border-radius:12px;
+  overflow:hidden;
+  background:#000;
+}
+#yt-player{
+  width:100%;
+  aspect-ratio:16/9;
+  background:#000;
+}
+.media-video-actions{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin:8px 0 10px 0;
+}
+.media-link{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:11px;
+  padding:5px 9px;
+  border-radius:999px;
+  border:1px solid #cfe3ff;
+  background:#f6fbff;
+  color:#0b4aa6;
+  text-decoration:none;
+}
+.media-link:hover{background:#eaf5ff}
+.media-criteria{
+  padding:6px 12px 14px 12px;
+}
+
+/* 判定基準の見やすい整形 */
+.criteria-block{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:10px;
+  padding:10px;
+  margin:8px 0;
+}
+.criteria-head{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:6px;
+}
+.criteria-tag{
+  font-size:11px;
+  padding:2px 8px;
+  border-radius:999px;
+  background:#f1f7ff;
+  border:1px solid #cfe3ff;
+  font-weight:700;
+}
+.criteria-value{
+  font-size:12px;
+  font-weight:700;
+}
+.criteria-section-title{
+  font-size:12px;
+  font-weight:800;
+  padding:4px 0 2px 0;
+  border-top:1px dashed #e6eefb;
+  margin-top:8px;
+}
+.criteria-section-title:first-of-type{
+  border-top:none;margin-top:0;
+}
+.criteria-list{
+  margin:6px 0 0 18px;
+  padding:0;
+  font-size:13px;
+}
+.criteria-note{
+  font-size:11px;
+  opacity:.75;
+  margin-top:4px;
+}
+.criteria-plain{
+  font-size:13px;
+  white-space:pre-wrap;
+}
+.criteria-empty{
+  font-size:12px;
+  opacity:.7;
+}
+
+/* ===== 印刷 ===== */
+@media print{
+  .total-bar,.mini-nav,.search-bar,.mode-bar{display:none!important}
+  body{padding-top:0;padding-bottom:0}
+  .order-box{page-break-inside:avoid}
+}
+
+/* ===== 端末向け微調整 ===== */
+@media (max-width:420px){
+  .tech-controls{min-width:auto}
+  .media-dialog{width:min(520px,96vw)}
 }
 </style>
 </head>
@@ -279,16 +444,25 @@ button{border:none;border-radius:8px;cursor:pointer}
     <summary>点数別リスト（決勝スコア）</summary>
     <div class="section-content" id="tech-list"></div>
   </details>
+
   <div class="pre-box">
     予選点（0〜112）：
     <input type="number" id="pre-score" class="pre-input" value="0" min="0" max="112" />
     <p class="warning" id="pre-warn">⚠ 予選は0〜112点で入力してください。</p>
   </div>
 
-  <!-- 全体プリセット -->
-  <div style="display:flex;gap:8px;margin-top:8px;">
-    <button id="save-overall-preset" style="flex:1;padding:8px;border-radius:10px;background:#fbe9ff;">全体構成を保存</button>
-    <button id="load-overall-preset" style="flex:1;padding:8px;border-radius:10px;background:#e0f7ff;">全体構成を呼び出し</button>
+  <!-- 全体プリセット（2枠） -->
+  <div class="preset-box">
+    <div class="preset-row">
+      <select id="overall-preset-slot">
+        <option value="slot1">全体プリセット①</option>
+        <option value="slot2">全体プリセット②</option>
+      </select>
+      <input id="overall-preset-name" type="text" placeholder="プリセット名">
+      <button id="save-overall-preset">保存</button>
+      <button id="load-overall-preset">読込</button>
+    </div>
+    <div class="preset-hint">決勝スコアのチェック/倍率/予選チェック/編成/予選点を丸ごと保存します。</div>
   </div>
 </div>
 
@@ -296,15 +470,25 @@ button{border:none;border-radius:8px;cursor:pointer}
 <div id="mode-finals" class="mode-section">
   <p style="font-size:13px;">決勝スコアで選んだ最大30技を読み込み、順番を並べ替えます（ドラッグ可・長押しで削除）。</p>
   <button id="load-finals-btn" style="background:var(--blue);color:#fff;width:100%;padding:10px;border-radius:10px">決勝技を読み込む</button>
+
   <div class="order-box">
     <div class="order-box-title">決勝編成（<span id="finals-count">0</span>技）</div>
     <ul id="finals-list" class="order-list"></ul>
     <p style="font-size:11px;opacity:.7;margin-top:4px;">↑（上）／ ↓（下）／ ✕（長押し削除）／ ドラッグで並べ替え</p>
   </div>
-  <!-- 決勝プリセット -->
-  <div style="display:flex;gap:8px;margin-top:8px;">
-    <button id="save-finals-preset" style="flex:1;padding:8px;border-radius:10px;background:#f0f4ff;">決勝構成を保存</button>
-    <button id="load-finals-preset" style="flex:1;padding:8px;border-radius:10px;background:#e0ffe0;">決勝構成を呼び出し</button>
+
+  <!-- 決勝プリセット（2枠） -->
+  <div class="preset-box">
+    <div class="preset-row">
+      <select id="finals-preset-slot">
+        <option value="slot1">決勝プリセット①</option>
+        <option value="slot2">決勝プリセット②</option>
+      </select>
+      <input id="finals-preset-name" type="text" placeholder="プリセット名">
+      <button id="save-finals-preset">保存</button>
+      <button id="load-finals-preset">読込</button>
+    </div>
+    <div class="preset-hint">決勝編成リストのみを保存します（最大30技）。</div>
   </div>
 </div>
 
@@ -331,23 +515,44 @@ button{border:none;border-radius:8px;cursor:pointer}
 
   <p class="pre-sum">予選技 基礎点合計：<span id="pre-tech-total">0</span> 点</p>
 
-  <!-- 予選プリセット -->
-  <div style="display:flex;gap:8px;margin-top:8px;">
-    <button id="save-prelims-preset" style="flex:1;padding:8px;border-radius:10px;background:#f0f4ff;">予選構成を保存</button>
-    <button id="load-prelims-preset" style="flex:1;padding:8px;border-radius:10px;background:#e0ffe0;">予選構成を呼び出し</button>
+  <!-- 予選プリセット（2枠） -->
+  <div class="preset-box">
+    <div class="preset-row">
+      <select id="prelims-preset-slot">
+        <option value="slot1">予選プリセット①</option>
+        <option value="slot2">予選プリセット②</option>
+      </select>
+      <input id="prelims-preset-name" type="text" placeholder="プリセット名">
+      <button id="save-prelims-preset">保存</button>
+      <button id="load-prelims-preset">読込</button>
+    </div>
+    <div class="preset-hint">第1R/第2Rの並びを保存します（各最大6技）。</div>
   </div>
 </div>
 
-<!-- 判定基準モーダル -->
-<div id="judge-modal" class="judge-modal">
-  <div class="judge-overlay" data-close="1"></div>
-  <div class="judge-dialog">
-    <div class="judge-header">
-      <span id="judge-title">技名</span>
-      <button type="button" id="judge-close">✕</button>
+<!-- 統合：動画＋判定基準モーダル -->
+<div id="media-modal" class="media-modal">
+  <div class="media-overlay" data-close="1"></div>
+  <div class="media-dialog" role="dialog" aria-modal="true">
+    <div class="media-header">
+      <div class="media-title">
+        <span id="media-name">技名</span>
+        <span class="media-pt-chip" id="media-pt-chip">-点</span>
+      </div>
+      <button type="button" id="media-close">✕</button>
     </div>
-    <div class="judge-body">
-      <p id="judge-text">ここに判定基準が表示されます。</p>
+
+    <div class="media-body">
+      <div class="media-video">
+        <div class="media-player-shell">
+          <div id="yt-player"></div>
+        </div>
+        <div class="media-video-actions">
+          <a class="media-link" id="media-trick-link" href="#" target="_blank" rel="noopener">この技をYouTubeで開く</a>
+          <a class="media-link" id="media-full-link" href="#" target="_blank" rel="noopener">この点数の全動画</a>
+        </div>
+      </div>
+      <div class="media-criteria" id="media-criteria"></div>
     </div>
   </div>
 </div>
@@ -374,7 +579,7 @@ button{border:none;border-radius:8px;cursor:pointer}
       <li>決勝スコアで技を選びつつ、予選は最大12技にチェック。</li>
       <li>予選検索はひらがな/カタカナOK、ヒットを黄色ハイライト。</li>
       <li>合計は自動保存。次回開いても続きから再開できます。</li>
-      <li>ミニメニューから印刷・再計算・外部リンクに即アクセス。</li>
+      <li>各技の「動画・判定」から区間再生＆判定基準を確認。</li>
       <li>削除は長押しで誤操作防止。並べ替えはドラッグも可。</li>
     </ul>
     <div class="tour-actions">
@@ -385,23 +590,55 @@ button{border:none;border-radius:8px;cursor:pointer}
 </div>
 
 <script>
-/* ================== 技データ ================== */
+/* =========================================================
+   0) 点数別 全動画URL
+========================================================= */
+const fullVideoByPoint = {
+  1:"https://youtu.be/-21xaBq6eO0?si=TaHeRTlGXAqChguf",
+  2:"https://youtu.be/KqYhciXs9QQ?si=aYwcpmxiG5PRPeF9",
+  3:"https://youtu.be/7KqlE9a6fe0?si=bxqDRPa6RIdYN9IH",
+  4:"https://youtu.be/MyxnZEb6fQE?si=xB3vu58eQfLlaUbb",
+  5:"https://youtu.be/yPGRWcCYvYA?si=GEEWdeK50L2bu75C",
+  6:"https://youtu.be/JM_Xny9NBQs?si=YQAN_pyz1kE2xOZx",
+  7:"https://youtu.be/YkgL-pkNRR0?si=8Hbi_cxz4v3NPC7M",
+  8:"https://youtu.be/FH46y1E1NfU?si=LzjeyRHy73FXYa9y",
+  9:"https://youtu.be/mkXk2JpGYCo?si=A7wFANhO-UkeGF8j",
+ 10:"https://youtu.be/twdbwAdapjE?si=kRdp82sjUuOBB3bd"
+};
+const videoIdByPoint = {
+  1:"-21xaBq6eO0",
+  2:"KqYhciXs9QQ",
+  3:"7KqlE9a6fe0",
+  4:"MyxnZEb6fQE",
+  5:"yPGRWcCYvYA",
+  6:"JM_Xny9NBQs",
+  7:"YkgL-pkNRR0",
+  8:"FH46y1E1NfU",
+  9:"mkXk2JpGYCo",
+ 10:"twdbwAdapjE"
+};
+
+/* =========================================================
+   1) 技データ（表記統一）
+========================================================= */
 const tricks = {
   1:["紐かけ手乗せ","お手玉","どじょうすくい","メリーゴーランド","初詣","手乗せジャンプ","脚下から回す","線香花火","ブーメランキャッチ","ベルト"],
   2:["つばめ返し","ひばり返し","リフティング","つなわたり","紐のせ","日本一周","ツイスト片道","お手玉足抜き","カメレオン","フック"],
   3:["トンネルつなわたり","腰かけ","手からメリーゴーランド（3周）","ツイスト往復","トランポリン（3回）","おちょこ","タケコプター","二段ゴマ","サンズ（1回）","燈籠","クロスキャッチ"],
   4:["指のせ","大車輪","かざぐるま","竜巻","へび（3周）","牛若丸片道","渦潮（上下2回）","メダル","舞妓かけ","コメタ","ムチ1回","胴回し","脚くぐし（1回）","脚回し","空中ブランコ"],
-  5:["砂時計","はやぶさ返し","鯉の滝登り","両手へび","足かけ","空中大車輪","足乗せ","縦へび3周","シングルクロック","チョップスティック","リキャプチャー型グリーントライアングル","ゼロスタ","クロスキャッチフォール","ダイレクト綱渡り"],
+  5:["砂時計","はやぶさ返し","鯉の滝登り","両手へび","足かけ","空中大車輪","足乗せ","縦へび（3周）","シングルクロック","チョップスティック","リキャプチャー型グリーントライアングル","ゼロスタ","クロスキャッチフォール","ダイレクト綱渡り"],
   6:["地獄車3周","白刃取り","燕尾返し","オープンウィップ1回","背くぐし1回","トルネード1回","リフティング〜直大車輪","ピルエット（ひものせ〜ひものせ）","ザリガニ釣り","片白刃","登り龍（5周）"],
-  7:["鎖鎌","夜叉車","首切り〜腰切り〜脚切り","忍者","脚くぐし in out","かまいたち3セット in 両手へび","レール","むち3","ゼロスタウィップ","リリーススタート","ストリングトルネード","オロチ"],
-  8:["同時2個空中手のせ","くるりんぱ（3回）","背面ムチ","かまいたち3セット〜太陽系1周","縦へび4周〜灯籠","歯車","二回転白刃取り","砂時計〜裏燈籠","Vレール（2回）","背面チョップスティック","侍ウィップ","侍キャッチ","ダイレクトむち3","へび2往復","脚下オープンウィップ","ニシキヘビ","背面燈籠"],
+  7:["鎖鎌","夜叉車","首切り〜腰切り〜脚切り","忍者","脚くぐしin out","かまいたち3セットin両手へび","レール","むち3","ゼロスタウィップ","リリーススタート","ストリングトルネード","オロチ"],
+  8:["同時2個空中手乗せ","くるりんぱ（3回）","背面ムチ","かまいたち3セット〜太陽系1周","縦ヘビ4周〜灯籠","歯車","二回転白刃取り","砂時計〜裏燈籠","Vレール（2回）","背面チョップスティック","侍ウィップ","侍キャッチ","ダイレクトむち3","へび2往復","脚下オープンウィップ","ニシキヘビ","背面燈籠"],
   9:["リュウグウノツカイ","ウロボロス","スラックライン","背面オープンウィップ","背面両手へび","サイドワインダー2.0","両面ちょんかけ","夜刀神","クエンティン・ウィップ","渦潮〜燈籠","4DEX","フットクラッチ","フットトス蛇","ダブルピルエット白刃取り","アームグラインドウィップ","背面ダイレクトむち3"],
- 10:["ダイレク燈籠","2個うずしお3回","てじなーにゃむち","ヤトボロス"]
+ 10:["ダイレク燈籠","2個同時うずしお3回","てじなーにゃむち","ヤトボロス"]
 };
 
-/* ================== 判定基準データ ================== */
+/* =========================================================
+   2) 判定基準データ（あなたの貼付内容を保持）
+   ※必要に応じて今後追加OK
+========================================================= */
 const judgeCriteria = {
-  // 1点技
   "紐かけ手乗せ": `【点数】1
 【審査基準】
 ・紐のかけ方は問わない
@@ -479,7 +716,6 @@ const judgeCriteria = {
 【成功判定（フィニッシュ／コンボ中）】
 こまが紐に乗った瞬間`,
 
-  // 2点技
   "つばめ返し": `【点数】2
 【スタート技】
 【審査基準】
@@ -558,7 +794,6 @@ const judgeCriteria = {
 【成功判定（フィニッシュ／コンボ中）】
 こまが手に乗った瞬間`,
 
-  // 3点技
   "トンネルつなわたり": `【点数】3
 【審査基準】
 ・脚の下でつなわたりができていること
@@ -634,7 +869,6 @@ const judgeCriteria = {
 【成功判定（フィニッシュ／コンボ中）】
 こまが紐に乗った瞬間`,
 
-  // 4点技
   "指のせ": `【点数】4
 【審査基準】
 ・水かき部分に乗っていないこと
@@ -746,7 +980,6 @@ const judgeCriteria = {
 【成功判定（フィニッシュ／コンボ中）】
 こまが手に乗った瞬間`,
 
-  // 5点技
   "砂時計": `【点数】5
 【審査基準】
 ・軸の両端以外でこまに触れていないこと
@@ -806,7 +1039,7 @@ const judgeCriteria = {
 【成功判定（フィニッシュ／コンボ中）】
 こまが足の甲に乗った瞬間`,
 
-  "縦へび3周": `【点数】5
+  "縦へび（3周）": `【点数】5
 【審査基準】
 ・腕の周りを3周すること
 【成功判定（フィニッシュ）】
@@ -865,7 +1098,6 @@ const judgeCriteria = {
 【成功判定（フィニッシュ／コンボ中）】
 こまが手に乗った瞬間`,
 
-  // 6点技
   "地獄車3周": `【点数】6
 【審査基準】
 ・3周は連続で行うこと
@@ -953,7 +1185,6 @@ const judgeCriteria = {
 【成功判定（コンボ中）】
 5周回り切った瞬間`,
 
-  // 7点技
   "鎖鎌": `【点数】7
 【審査基準】
 ・紐は片手で輪になっている
@@ -991,7 +1222,7 @@ const judgeCriteria = {
 【成功判定（フィニッシュ／コンボ中）】
 登ったこまが上の手に触れた瞬間`,
 
-  "脚くぐし in out": `【点数】7
+  "脚くぐしin out": `【点数】7
 【審査基準】
 ・イン→アウトの順に連続して行う
 ・インの際はリキャプチャー、アウトの際はドラムビートでかける
@@ -999,7 +1230,7 @@ const judgeCriteria = {
 【成功判定（フィニッシュ／コンボ中）】
 こまが紐に乗った瞬間`,
 
-  "かまいたち3セット in 両手へび": `【点数】7
+  "かまいたち3セットin両手へび": `【点数】7
 【審査基準】
 ・両手へびは左右合わせて5周する
 ・かまいたちは3セット行う
@@ -1058,8 +1289,7 @@ const judgeCriteria = {
 【成功判定（コンボ中）】
 こまが腕に巻かれた紐を回り切った瞬間`,
 
-  // 8点技
-  "同時2個空中手のせ": `【点数】8
+  "同時2個空中手乗せ": `【点数】8
 【スタート技】
 【審査基準】
 ・2個のこまのどちらも、紐が解けることで回転が始まっている
@@ -1095,7 +1325,7 @@ const judgeCriteria = {
 【成功判定（コンボ中）】
 こまが腕に巻いた紐を周り切った瞬間`,
 
-  "縦へび4周〜灯籠": `【点数】8
+  "縦ヘビ4周〜灯籠": `【点数】8
 【審査基準】
 ・こまの角度が適切（水平になっていない）
 ・腕の周りを4周している
@@ -1205,7 +1435,6 @@ const judgeCriteria = {
 【成功判定（フィニッシュ／コンボ中）】
 こまが親指の上に乗り、親指のみに触れた瞬間`,
 
-  // 9点技
   "リュウグウノツカイ": `【点数】9
 【審査基準】
 ・紐の身体への巻き方が適切である
@@ -1337,7 +1566,6 @@ const judgeCriteria = {
 【成功判定（フィニッシュ／コンボ中）】
 こまが紐に乗った瞬間`,
 
-  // 10点技
   "ダイレク燈籠": `【点数】10
 【スタート技】
 【審査基準】
@@ -1346,7 +1574,7 @@ const judgeCriteria = {
 【成功判定（フィニッシュ／コンボ中）】
 こまが親指に乗った瞬間`,
 
-  "2個うずしお3回": `【点数】10
+  "2個同時うずしお3回": `【点数】10
 【審査基準】
 ・2個のこまを回す方法は問わない
 ・上下3回行う
@@ -1371,7 +1599,155 @@ const judgeCriteria = {
 こまが手に乗った瞬間`
 };
 
-/* ================== DOM参照 ================== */
+/* =========================================================
+   3) 個別タイムスタンプ（開始秒）
+========================================================= */
+const trickStartSecondsByPoint = {
+  1: {
+    "紐かけ手乗せ": 4,
+    "お手玉": 18,
+    "どじょうすくい": 26,
+    "メリーゴーランド": 36,
+    "初詣": 44,
+    "手乗せジャンプ": 52,
+    "脚下から回す": 57,
+    "線香花火": 62,
+    "ブーメランキャッチ": 75,
+    "ベルト": 80
+  },
+  2: {
+    "つばめ返し": 5,
+    "ひばり返し": 18,
+    "リフティング": 27,
+    "つなわたり": 36,
+    "紐のせ": 53,
+    "日本一周": 66,
+    "ツイスト片道": 75,
+    "お手玉足抜き": 88,
+    "カメレオン": 102,
+    "フック": 120
+  },
+  3: {
+    "トンネルつなわたり": 5,
+    "腰かけ": 18,
+    "手からメリーゴーランド（3周）": 26,
+    "ツイスト往復": 51,
+    "トランポリン（3回）": 70,
+    "おちょこ": 83,
+    "タケコプター": 94,
+    "二段ゴマ": 109,
+    "サンズ（1回）": 122,
+    "燈籠": 128,
+    "クロスキャッチ": 137
+  },
+  4: {
+    "指のせ": 4,
+    "大車輪": 12,
+    "かざぐるま": 21,
+    "竜巻": 35,
+    "へび（3周）": 47,
+    "牛若丸片道": 63,
+    "渦潮（上下2回）": 81,
+    "メダル": 90,
+    "舞妓かけ": 101,
+    "コメタ": 109,
+    "ムチ1回": 114,
+    "胴回し": 124,
+    "脚くぐし（1回）": 131,
+    "脚回し": 138,
+    "空中ブランコ": 146
+  },
+  5: {
+    "砂時計": 4,
+    "はやぶさ返し": 20,
+    "鯉の滝登り": 33,
+    "両手へび": 46,
+    "足かけ": 65,
+    "空中大車輪": 73,
+    "足乗せ": 81,
+    "縦へび（3周）": 88,
+    "シングルクロック": 97,
+    "チョップスティック": 105,
+    "リキャプチャー型グリーントライアングル": 112,
+    "ゼロスタ": 120,
+    "クロスキャッチフォール": 126,
+    "ダイレクト綱渡り": 134
+  },
+  6: {
+    "地獄車3周": 5,
+    "白刃取り": 15,
+    "燕尾返し": 24,
+    "オープンウィップ1回": 33,
+    "背くぐし1回": 39,
+    "トルネード1回": 50,
+    "リフティング〜直大車輪": 58,
+    "ピルエット（ひものせ〜ひものせ）": 68,
+    "ザリガニ釣り": 74,
+    "片白刃": 83,
+    "登り龍（5周）": 93
+  },
+  7: {
+    "鎖鎌": 4,
+    "夜叉車": 14,
+    "首切り〜腰切り〜脚切り": 27,
+    "忍者": 39,
+    "脚くぐしin out": 52,
+    "かまいたち3セットin両手へび": 60,
+    "レール": 75,
+    "むち3": 90,
+    "ゼロスタウィップ": 103,
+    "リリーススタート": 108,
+    "ストリングトルネード": 117,
+    "オロチ": 126
+  },
+  8: {
+    "同時2個空中手乗せ": 4,
+    "くるりんぱ（3回）": 13,
+    "背面ムチ": 26,
+    "かまいたち3セット〜太陽系1周": 34,
+    "縦ヘビ4周〜灯籠": 47,
+    "歯車": 66,
+    "二回転白刃取り": 79,
+    "砂時計〜裏燈籠": 89,
+    "Vレール（2回）": 101,
+    "背面チョップスティック": 113,
+    "侍ウィップ": 122,
+    "侍キャッチ": 138,
+    "ダイレクトむち3": 147,
+    "へび2往復": 153,
+    "脚下オープンウィップ": 167,
+    "ニシキヘビ": 179,
+    "背面燈籠": 195
+  },
+  9: {
+    "リュウグウノツカイ": 5,
+    "ウロボロス": 25,
+    "スラックライン": 40,
+    "背面オープンウィップ": 52,
+    "背面両手へび": 61,
+    "サイドワインダー2.0": 81,
+    "両面ちょんかけ": 92,
+    "夜刀神": 100,
+    "クエンティン・ウィップ": 112,
+    "渦潮〜燈籠": 125,
+    "4DEX": 137,
+    "フットクラッチ": 146,
+    "フットトス蛇": 162,
+    "ダブルピルエット白刃取り": 181,
+    "アームグラインドウィップ": 195,
+    "背面ダイレクトむち3": 206
+  },
+  10: {
+    "ダイレク燈籠": 5,
+    "2個同時うずしお3回": 17,
+    "てじなーにゃむち": 44,
+    "ヤトボロス": 51
+  }
+};
+
+/* =========================================================
+   4) DOM参照
+========================================================= */
 const totalBar = document.getElementById('total-bar');
 const chipsWrap = document.getElementById('chips');
 const warn = document.getElementById('warn');
@@ -1386,13 +1762,18 @@ const searchInput = document.getElementById('trick-search');
 const searchHits = document.getElementById('search-hits');
 const toastEl = document.getElementById('toast');
 
-/* 判定モーダル */
-const judgeModal  = document.getElementById('judge-modal');
-const judgeTitle  = document.getElementById('judge-title');
-const judgeText   = document.getElementById('judge-text');
-const judgeClose  = document.getElementById('judge-close');
+/* 統合メディアモーダル */
+const mediaModal  = document.getElementById('media-modal');
+const mediaName   = document.getElementById('media-name');
+const mediaPtChip = document.getElementById('media-pt-chip');
+const mediaClose  = document.getElementById('media-close');
+const mediaCriteriaWrap = document.getElementById('media-criteria');
+const mediaTrickLink = document.getElementById('media-trick-link');
+const mediaFullLink  = document.getElementById('media-full-link');
 
-/* ================== ユーティリティ ================== */
+/* =========================================================
+   5) ユーティリティ
+========================================================= */
 const showToast = (msg, ms=1800)=>{
   toastEl.textContent = msg;
   toastEl.classList.add('show');
@@ -1406,7 +1787,46 @@ const kanaNormalize = s => (s||'').toLowerCase()
   .replace(/[ぁ-ゖ]/g, ch=>String.fromCharCode(ch.charCodeAt(0)+0x60))
   .replace(/[ﾞﾟ]/g,'');
 
-/* ================== リスト構築 ================== */
+/* 数字全角/半角ゆれ */
+function toHalfWidthDigits(str){
+  return (str||"").replace(/[０-９]/g, d => String.fromCharCode(d.charCodeAt(0) - 0xFEE0));
+}
+function toFullWidthDigits(str){
+  return (str||"").replace(/[0-9]/g, d => String.fromCharCode(d.charCodeAt(0) + 0xFEE0));
+}
+
+/* へび/ヘビ・むち/ムチ 等の軽微ゆれ */
+function softNameVariants(name){
+  const v = new Set();
+  v.add(name);
+  v.add(toHalfWidthDigits(name));
+  v.add(toFullWidthDigits(name));
+  v.add(name.replace(/へび/g,"ヘビ").replace(/むち/g,"ムチ"));
+  v.add(name.replace(/ヘビ/g,"へび").replace(/ムチ/g,"むち"));
+  v.add(name.replace(/\s+/g,""));
+  return [...v];
+}
+
+/* 開始秒 lookup */
+function lookupStart(startsMap, name){
+  if(!startsMap) return null;
+  for(const cand of softNameVariants(name)){
+    if(startsMap[cand] != null) return startsMap[cand];
+  }
+  return null;
+}
+
+/* 判定基準 lookup */
+function lookupCriteria(name){
+  for(const cand of softNameVariants(name)){
+    if(judgeCriteria[cand]) return judgeCriteria[cand];
+  }
+  return null;
+}
+
+/* =========================================================
+   6) リスト構築
+========================================================= */
 const scoreListWrap = document.getElementById("tech-list");
 const preTechWrap = document.getElementById("pre-tech-list");
 
@@ -1419,7 +1839,7 @@ function makeScoreItem(pt, name){
       <span class="tech-pt-label">${pt}点技</span>
     </div>
     <div class="tech-controls">
-      <button type="button" class="judge-btn" data-name="${name}">判定基準</button>
+      <button type="button" class="judge-btn" data-name="${name}" data-pt="${pt}">動画・判定</button>
       <label><input type="checkbox" class="multi">1.5倍</label>
       <label><input type="checkbox" class="chk" data-pt="${pt}" data-name="${name}">使用</label>
     </div>`;
@@ -1434,30 +1854,44 @@ function makePreItemCheck(pt, name){
       <span class="tech-pt-label">${pt}点技</span>
     </div>
     <div class="tech-controls">
-      <button type="button" class="judge-btn" data-name="${name}">判定基準</button>
+      <button type="button" class="judge-btn" data-name="${name}" data-pt="${pt}">動画・判定</button>
       <label><input type="checkbox" class="pre-chk" data-pt="${pt}" data-name="${name}">予選</label>
     </div>`;
   return item;
 }
 
+function makePtSummary(pt){
+  const sum = document.createElement('summary');
+  const arrow = document.createElement('span');
+  arrow.className = 'pt-group-arrow';
+  arrow.textContent = '▼';
+
+  const title = document.createElement('span');
+  title.className = 'section-title pt-'+pt;
+  title.textContent = `${pt}点技`;
+
+  const full = document.createElement('button');
+  full.type = "button";
+  full.className = "full-video-btn";
+  full.dataset.pt = pt;
+  full.textContent = "全動画";
+
+  sum.appendChild(arrow);
+  sum.appendChild(title);
+  sum.appendChild(full);
+  return sum;
+}
+
 function buildLists(){
   scoreListWrap.innerHTML='';
   preTechWrap.innerHTML='';
+
   Object.keys(tricks).forEach(pt=>{
     /* 決勝側 */
     const sec1 = document.createElement('details');
     sec1.className = 'pt-group';
     sec1.open = true;
-    const sum1 = document.createElement('summary');
-    const arrow1 = document.createElement('span');
-    arrow1.className = 'pt-group-arrow';
-    arrow1.textContent = '▼';
-    const title1 = document.createElement('span');
-    title1.className='section-title pt-'+pt;
-    title1.textContent = `${pt}点技`;
-    sum1.appendChild(arrow1);
-    sum1.appendChild(title1);
-    sec1.appendChild(sum1);
+    sec1.appendChild(makePtSummary(pt));
     tricks[pt].forEach(n=> sec1.appendChild(makeScoreItem(pt, n)));
     scoreListWrap.appendChild(sec1);
 
@@ -1465,45 +1899,292 @@ function buildLists(){
     const sec2 = document.createElement('details');
     sec2.className = 'pt-group';
     sec2.open = true;
-    const sum2 = document.createElement('summary');
-    const arrow2 = document.createElement('span');
-    arrow2.className = 'pt-group-arrow';
-    arrow2.textContent = '▼';
-    const title2 = document.createElement('span');
-    title2.className='section-title pt-'+pt;
-    title2.textContent = `${pt}点技`;
-    sum2.appendChild(arrow2);
-    sum2.appendChild(title2);
-    sec2.appendChild(sum2);
+    sec2.appendChild(makePtSummary(pt));
     tricks[pt].forEach(n=> sec2.appendChild(makePreItemCheck(pt, n)));
     preTechWrap.appendChild(sec2);
   });
 }
 buildLists();
 
-/* ================== 判定基準ポップアップ ================== */
-function openJudgePopup(name){
-  judgeTitle.textContent = name;
-  const text = judgeCriteria[name];
-  judgeText.textContent = text || "この技の判定基準はまだ登録されていません。";
-  judgeModal.style.display = 'flex';
-}
-function closeJudgePopup(){
-  judgeModal.style.display = 'none';
+/* 全動画ボタン押下（detailsの開閉を邪魔しない） */
+document.addEventListener("click",(e)=>{
+  const btn = e.target.closest(".full-video-btn");
+  if(!btn) return;
+  e.stopPropagation();
+  const pt = Number(btn.dataset.pt);
+  const url = fullVideoByPoint[pt];
+  if(url) window.open(url, "_blank");
+  else showToast("全動画URLが未登録です");
+});
+
+/* =========================================================
+   7) 判定基準の整形表示
+========================================================= */
+function escapeHtml(s){
+  return (s||"").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
 }
 
-/* クリックイベント委譲 */
-document.addEventListener('click',(e)=>{
-  if(e.target.classList.contains('judge-btn')){
-    const name = e.target.dataset.name;
-    openJudgePopup(name);
+/* 文字列を見やすいブロック構造へ */
+function renderCriteria(text){
+  if(!text) return `<div class="criteria-block"><div class="criteria-empty">この技の判定基準はまだ登録されていません。</div></div>`;
+
+  const lines = text.split(/\r?\n/).map(l=>l.trimEnd());
+  let html = "";
+  let currentSection = null;
+  let bullets = [];
+
+  const flushBullets = ()=>{
+    if(bullets.length){
+      html += `<ul class="criteria-list">` + bullets.map(b=>`<li>${escapeHtml(b.replace(/^・\s*/,""))}</li>`).join("") + `</ul>`;
+      bullets = [];
+    }
+  };
+
+  const openSection = (title)=>{
+    flushBullets();
+    if(title === "点数"){
+      // 点数は特別扱い（次行 or 同行値を拾う）
+      currentSection = "点数";
+      return;
+    }
+    html += `<div class="criteria-section-title">${escapeHtml(title)}</div>`;
+    currentSection = title;
+  };
+
+  let pointValue = null;
+
+  for(let i=0;i<lines.length;i++){
+    const line = lines[i].trim();
+    if(!line) continue;
+
+    const m = line.match(/^【(.+?)】\s*(.*)$/);
+    if(m){
+      const title = m[1].trim();
+      const rest  = (m[2]||"").trim();
+
+      if(title === "点数"){
+        pointValue = rest || pointValue;
+        currentSection = "点数";
+      }else{
+        openSection(title);
+        if(rest){
+          // 同行に本文がある場合
+          html += `<div class="criteria-plain">${escapeHtml(rest)}</div>`;
+        }
+      }
+      continue;
+    }
+
+    if(currentSection === "点数" && pointValue == null){
+      pointValue = line;
+      continue;
+    }
+
+    if(line.startsWith("・")){
+      bullets.push(line);
+      continue;
+    }
+
+    if(line.startsWith("※") || line.startsWith("　※")){
+      flushBullets();
+      html += `<div class="criteria-note">${escapeHtml(line.replace(/^　/,""))}</div>`;
+      continue;
+    }
+
+    flushBullets();
+    html += `<div class="criteria-plain">${escapeHtml(line)}</div>`;
   }
-  if(e.target === judgeClose || e.target.dataset.close === "1"){
-    closeJudgePopup();
+  flushBullets();
+
+  // 点数ブロックを先頭に合成
+  let head = "";
+  if(pointValue != null){
+    head = `
+      <div class="criteria-head">
+        <span class="criteria-tag">点数</span>
+        <span class="criteria-value">${escapeHtml(String(pointValue))}</span>
+      </div>
+    `;
+  }
+
+  return `<div class="criteria-block">${head}${html || `<div class="criteria-empty">判定基準テキストが空です。</div>`}</div>`;
+}
+
+/* =========================================================
+   8) 個別動画セグメント取得
+========================================================= */
+function getSegment(pt, name){
+  const list = tricks[pt] || [];
+  const startsMap = trickStartSecondsByPoint[pt] || {};
+  const videoId = videoIdByPoint[pt];
+
+  const startV = lookupStart(startsMap, name);
+  const start = (startV != null) ? Number(startV) : null;
+
+  // 次の技の開始を end にする
+  let end = null;
+  const idx = list.indexOf(name);
+  if(idx >= 0 && idx < list.length - 1){
+    const nextName = list[idx+1];
+    const nextStartV = lookupStart(startsMap, nextName);
+    if(nextStartV != null && start != null && Number(nextStartV) > start){
+      end = Number(nextStartV);
+    }
+  }
+
+  return { videoId, start, end };
+}
+
+/* =========================================================
+   9) YouTube IFrame API（区間再生）
+========================================================= */
+let ytPlayer = null;
+let ytReady = false;
+let endTimer = null;
+let currentSegment = null;
+
+(function loadYT(){
+  const tag = document.createElement("script");
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.head.appendChild(tag);
+})();
+
+window.onYouTubeIframeAPIReady = function(){
+  ytReady = true;
+};
+
+function ensurePlayer(videoId){
+  return new Promise(resolve=>{
+    const make = ()=>{
+      if(ytPlayer){
+        resolve(ytPlayer);
+        return;
+      }
+      ytPlayer = new YT.Player("yt-player", {
+        videoId: videoId || videoIdByPoint[1],
+        playerVars: {
+          rel: 0,
+          modestbranding: 1,
+          playsinline: 1
+        },
+        events: {
+          onReady: ()=>resolve(ytPlayer)
+        }
+      });
+    };
+
+    if(ytReady && window.YT && window.YT.Player){
+      make();
+    }else{
+      const t = setInterval(()=>{
+        if(ytReady && window.YT && window.YT.Player){
+          clearInterval(t);
+          make();
+        }
+      }, 80);
+    }
+  });
+}
+
+function clearEndTimer(){
+  if(endTimer){
+    clearTimeout(endTimer);
+    endTimer = null;
+  }
+}
+
+function playSegment(seg){
+  currentSegment = seg;
+  const { videoId, start, end } = seg;
+
+  ensurePlayer(videoId).then(p=>{
+    clearEndTimer();
+
+    if(start != null){
+      // endSeconds は API が無視するケースがあるので保険タイマー併用
+      p.loadVideoById({
+        videoId,
+        startSeconds: start,
+        endSeconds: end != null ? end : undefined
+      });
+    }else{
+      p.loadVideoById({ videoId });
+    }
+
+    // 保険タイマー
+    if(start != null && end != null){
+      const ms = Math.max(500, (end - start) * 1000);
+      endTimer = setTimeout(()=>{
+        try{ p.pauseVideo(); }catch{}
+      }, ms);
+    }
+  });
+}
+
+/* =========================================================
+   10) 統合モーダル open/close
+========================================================= */
+function openMediaModal(pt, name){
+  mediaName.textContent = name;
+  mediaPtChip.textContent = `${pt}点`;
+
+  // 判定基準
+  const critText = lookupCriteria(name);
+  mediaCriteriaWrap.innerHTML = renderCriteria(critText);
+
+  // リンク
+  const baseVid = videoIdByPoint[pt];
+  const startsMap = trickStartSecondsByPoint[pt];
+  const start = lookupStart(startsMap, name);
+  const trickUrl = baseVid
+    ? `https://youtu.be/${baseVid}${start!=null ? `?t=${start}` : ""}`
+    : "#";
+  mediaTrickLink.href = trickUrl;
+  mediaFullLink.href = fullVideoByPoint[pt] || "#";
+
+  // 動画
+  const seg = getSegment(pt, name);
+  if(!seg.videoId){
+    showToast("この点数の動画IDが未登録です");
+  }else{
+    playSegment(seg);
+  }
+
+  mediaModal.style.display = "flex";
+}
+
+function closeMediaModal(){
+  mediaModal.style.display = "none";
+  clearEndTimer();
+  try{ ytPlayer && ytPlayer.pauseVideo(); }catch{}
+}
+
+/* 判定/動画ボタン */
+document.addEventListener("click",(e)=>{
+  const btn = e.target.closest(".judge-btn");
+  if(btn){
+    const name = btn.dataset.name;
+    const pt = Number(btn.dataset.pt);
+    openMediaModal(pt, name);
+    return;
+  }
+  if(e.target === mediaClose || e.target?.dataset?.close === "1"){
+    closeMediaModal();
   }
 });
 
-/* ================== 計算 ================== */
+/* Escape で閉じる */
+document.addEventListener("keydown",(e)=>{
+  if(e.key === "Escape" && mediaModal.style.display === "flex"){
+    closeMediaModal();
+  }
+});
+
+/* =========================================================
+   11) 計算
+========================================================= */
 function getPreScore(){
   let v=parseFloat(preInput.value);
   if(isNaN(v)) v=0;
@@ -1514,7 +2195,6 @@ function getPreScore(){
 }
 let lastThreshold = 0;
 
-/* 2000点超で黒バー＆チップ色制御 */
 function updateBarColor(total){
   const chipEls = chipsWrap.querySelectorAll('.total-chip');
 
@@ -1601,7 +2281,9 @@ document.addEventListener('change', e=>{
   }
 });
 
-/* ================== 予選 検索 ================== */
+/* =========================================================
+   12) 予選 検索
+========================================================= */
 function applySearch(){
   const q = kanaNormalize(searchInput.value.trim());
   let hits=0;
@@ -1616,11 +2298,16 @@ function applySearch(){
 }
 searchInput.addEventListener('input', applySearch);
 
-/* ================== 決勝編成 ================== */
+/* =========================================================
+   13) 決勝編成
+========================================================= */
 const finalsList=document.getElementById("finals-list");
 const finalsCountSpan=document.getElementById("finals-count");
 
-function rebuildFinalsList(){ finalsCountSpan.textContent=finalsList.querySelectorAll(".order-item").length; saveState(); }
+function rebuildFinalsList(){
+  finalsCountSpan.textContent=finalsList.querySelectorAll(".order-item").length;
+  saveState();
+}
 
 function orderLiTemplate(pt,name){
   const li=document.createElement('li');
@@ -1633,10 +2320,14 @@ function orderLiTemplate(pt,name){
       <button class="order-btn order-btn-del" data-act="del">✕</button>
     </div>`;
   let pressT=null;
-  li.querySelector('[data-act="del"]').addEventListener('touchstart',()=>{ pressT=setTimeout(()=>{ li.remove(); rebuildFinalsList(); showToast("削除しました"); },600); },{passive:true});
-  li.querySelector('[data-act="del"]').addEventListener('touchend',()=>{ if(pressT){ clearTimeout(pressT); pressT=null; showToast("長押しで削除",800); }});
-  li.querySelector('[data-act="del"]').addEventListener('mousedown',()=>{ pressT=setTimeout(()=>{ li.remove(); rebuildFinalsList(); showToast("削除しました"); },600); });
-  ['mouseup','mouseleave'].forEach(ev=>li.querySelector('[data-act="del"]').addEventListener(ev,()=>{ if(pressT){clearTimeout(pressT); pressT=null;} }));
+  const delBtn = li.querySelector('[data-act="del"]');
+
+  const doDel=()=>{ li.remove(); rebuildFinalsList(); showToast("削除しました"); };
+
+  delBtn.addEventListener('touchstart',()=>{ pressT=setTimeout(doDel,600); },{passive:true});
+  delBtn.addEventListener('touchend',()=>{ if(pressT){ clearTimeout(pressT); pressT=null; showToast("長押しで削除",800); }});
+  delBtn.addEventListener('mousedown',()=>{ pressT=setTimeout(doDel,600); });
+  ['mouseup','mouseleave'].forEach(ev=>delBtn.addEventListener(ev,()=>{ if(pressT){clearTimeout(pressT); pressT=null;} }));
   return li;
 }
 
@@ -1659,7 +2350,7 @@ finalsList.addEventListener("click",e=>{
 /* DnD（決勝） */
 let dragEl=null;
 finalsList.addEventListener('dragstart',e=>{ dragEl=e.target; dragEl.classList.add('dragging'); });
-finalsList.addEventListener('dragend',e=>{ if(dragEl){dragEl.classList.remove('dragging'); dragEl=null; rebuildFinalsList(); }});
+finalsList.addEventListener('dragend',()=>{ if(dragEl){dragEl.classList.remove('dragging'); dragEl=null; rebuildFinalsList(); }});
 finalsList.addEventListener('dragover',e=>{
   e.preventDefault();
   const after = [...finalsList.querySelectorAll('.order-item:not(.dragging)')].find(el=>{
@@ -1670,7 +2361,9 @@ finalsList.addEventListener('dragover',e=>{
   if(after) finalsList.insertBefore(dragEl, after); else finalsList.appendChild(dragEl);
 });
 
-/* ================== 予選 編成 ================== */
+/* =========================================================
+   14) 予選 編成
+========================================================= */
 const preLimitWarn=document.getElementById("prelimit-warn");
 const applyPreBtn=document.getElementById("apply-prelims-btn");
 const list1=document.getElementById("prelims1-list");
@@ -1731,7 +2424,7 @@ function swapMove(li, to2){
   (to2?list2:list1).appendChild(mkPreOrderItem(pt,name,to2?2:1));
 }
 
-function preListHandler(e,listSelf,listOther){
+function preListHandler(e){
   if(!e.target.classList.contains("order-btn")) return;
   const act=e.target.dataset.act; const li=e.target.closest(".order-item");
   if(act==="up" && li.previousElementSibling) li.parentNode.insertBefore(li,li.previousElementSibling);
@@ -1746,7 +2439,7 @@ function preListHandler(e,listSelf,listOther){
 function bindDnd(list){
   let dragging=null;
   list.addEventListener('dragstart',e=>{ dragging=e.target; dragging.classList.add('dragging'); });
-  list.addEventListener('dragend',e=>{ if(dragging){ dragging.classList.remove('dragging'); dragging=null; updatePreSummary(); }});
+  list.addEventListener('dragend',()=>{ if(dragging){ dragging.classList.remove('dragging'); dragging=null; updatePreSummary(); }});
   list.addEventListener('dragover',e=>{
     e.preventDefault();
     const after=[...list.querySelectorAll('.order-item:not(.dragging)')].find(el=>{
@@ -1759,8 +2452,8 @@ function bindDnd(list){
 }
 [list1,list2].forEach(bindDnd);
 
-list1.addEventListener("click",e=>preListHandler(e,list1,list2));
-list2.addEventListener("click",e=>preListHandler(e,list2,list1));
+list1.addEventListener("click",preListHandler);
+list2.addEventListener("click",preListHandler);
 
 function updatePreSummary(){
   const sumNode = nodes=>{
@@ -1774,10 +2467,16 @@ function updatePreSummary(){
   saveState();
 }
 
-/* ================== モード切替 & ミニメニュー ================== */
+/* =========================================================
+   15) モード切替 & ミニメニュー
+========================================================= */
 const modeButtons=document.querySelectorAll(".mode-btn");
 const miniButtons=document.querySelectorAll(".mini-btn");
-const sections={ score:document.getElementById("mode-score"), finals:document.getElementById("mode-finals"), prelims:document.getElementById("mode-prelims") };
+const sections={
+  score:document.getElementById("mode-score"),
+  finals:document.getElementById("mode-finals"),
+  prelims:document.getElementById("mode-prelims")
+};
 function setMode(mode){
   Object.keys(sections).forEach(k=> sections[k].classList.toggle("active",k===mode));
   modeButtons.forEach(b=>b.classList.toggle("active",b.dataset.mode===mode));
@@ -1794,7 +2493,9 @@ miniButtons.forEach(btn=>{
 document.getElementById("btn-recalc").addEventListener("click",()=>{ calcTotal(); showToast("再計算しました"); });
 document.getElementById("btn-top").addEventListener("click",()=> window.scrollTo({top:0, behavior:"smooth"}));
 
-/* ================== リセット / 印刷 ================== */
+/* =========================================================
+   16) リセット / 印刷
+========================================================= */
 document.getElementById("btn-reset").addEventListener("click",()=>{
   document.querySelectorAll(".chk,.multi,.pre-chk").forEach(c=>c.checked=false);
   preInput.value=0; warn.style.display="none"; preWarn.style.display="none"; preLimitWarn.style.display="none";
@@ -1821,7 +2522,6 @@ document.getElementById("btn-print").addEventListener("click",()=>{
     ol{padding-left:20px}
     li{margin-bottom:4px;font-size:14px}
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    @media print {.no-print{display:none}}
   </style></head><body>
   <h1>選択技一覧</h1>
   <div class="meta">作成日時：${now} ／ 合計：${finalSpan.textContent}点 ／ 予選：${preSpan.textContent}点</div>
@@ -1836,9 +2536,12 @@ document.getElementById("btn-print").addEventListener("click",()=>{
   w.document.close(); w.print();
 });
 
-/* ================== CSV 入出力 ================== */
+/* =========================================================
+   17) CSV 入出力
+========================================================= */
 function exportCSV(){
   const rows=[["type","name","point","mult15","round","order"]];
+
   [...finalsList.querySelectorAll(".order-item .order-name")].forEach((n,i)=>{
     const m=n.textContent.match(/^\[(\d+)点]\s*(.+)$/); if(!m) return;
     rows.push(["final", m[2], m[1], "", "", i+1]);
@@ -1851,6 +2554,7 @@ function exportCSV(){
     const m=n.textContent.match(/^\[(\d+)点]\s*(.+)$/); if(!m) return;
     rows.push(["prelim", m[2], m[1], "", 2, i+1]);
   });
+
   document.querySelectorAll(".chk").forEach(chk=>{
     if(chk.checked){
       const name=chk.dataset.name, pt=chk.dataset.pt;
@@ -1872,12 +2576,14 @@ document.getElementById("csv-import").addEventListener("change",async(e)=>{
   const lines = text.split(/\r?\n/).filter(Boolean);
   const header = lines.shift()?.split(',').map(s=>s.replace(/^"|"$/g,'').replace(/""/g,'"'))||[];
   const idx=(k)=>header.indexOf(k);
+
   document.querySelectorAll(".chk,.multi,.pre-chk").forEach(c=>c.checked=false);
   list1.innerHTML=""; list2.innerHTML=""; finalsList.innerHTML="";
 
   for(const line of lines){
     const cols=line.match(/("([^"]|"")*"|[^,]+)/g)?.map(s=>s.replace(/^"|"$/g,'').replace(/""/g,'"'))||[];
     const type=cols[idx("type")]; const name=cols[idx("name")]; const point=cols[idx("point")];
+
     if(type==="final"){
       finalsList.appendChild(orderLiTemplate(point,name));
     }else if(type==="prelim"){
@@ -1885,54 +2591,172 @@ document.getElementById("csv-import").addEventListener("change",async(e)=>{
       (rnd?list2:list1).appendChild(mkPreOrderItem(point,name, rnd?2:1));
     }else if(type==="score_checked"){
       const chk=[...document.querySelectorAll(`.chk[data-name="${CSS.escape(name)}"][data-pt="${point}"]`)][0];
-      if(chk){ chk.checked=true; const mul=cols[idx("mult15")]; if(mul){ chk.closest('.tech-item').querySelector('.multi').checked=true; } }
+      if(chk){
+        chk.checked=true;
+        const mul=cols[idx("mult15")];
+        if(mul){ chk.closest('.tech-item').querySelector('.multi').checked=true; }
+      }
     }
   }
   calcTotal(); updatePreSummary(); rebuildFinalsList();
   showToast("CSVを取り込みました");
 });
 
-/* ================== 自動保存 ================== */
+/* =========================================================
+   18) 自動保存（現行状態）
+========================================================= */
 function saveState(){
   const state={
     pre: +preInput.value,
-    checks: [...document.querySelectorAll(".chk")].map(c=>({n:c.dataset.name,p:+c.dataset.pt,u:c.checked,m:c.closest('.tech-item')?.querySelector('.multi')?.checked||false})),
-    prechecks: [...document.querySelectorAll(".pre-chk")].map(c=>({n:c.dataset.name,p:+c.dataset.pt,u:c.checked})),
+    checks: [...document.querySelectorAll(".chk")].map(c=>({
+      n:c.dataset.name,
+      p:+c.dataset.pt,
+      u:c.checked,
+      m:c.closest('.tech-item')?.querySelector('.multi')?.checked||false
+    })),
+    prechecks: [...document.querySelectorAll(".pre-chk")].map(c=>({
+      n:c.dataset.name,
+      p:+c.dataset.pt,
+      u:c.checked
+    })),
     finals: [...finalsList.querySelectorAll(".order-name")].map(n=>n.textContent),
     p1: [...list1.querySelectorAll(".order-name")].map(n=>n.textContent),
     p2: [...list2.querySelectorAll(".order-name")].map(n=>n.textContent),
   };
   localStorage.setItem("tsubame2025", JSON.stringify(state));
 }
+
 function loadState(){
   const raw=localStorage.getItem("tsubame2025"); if(!raw) return;
   try{
     const s=JSON.parse(raw);
     preInput.value = s.pre ?? 0;
+
     document.querySelectorAll(".chk").forEach(c=>{
       const f=s.checks?.find(x=>x.n===c.dataset.name && x.p==c.dataset.pt);
-      if(f){ c.checked=!!f.u; const mul=c.closest('.tech-item')?.querySelector('.multi'); if(mul) mul.checked=!!f.m; }
+      if(f){
+        c.checked=!!f.u;
+        const mul=c.closest('.tech-item')?.querySelector('.multi');
+        if(mul) mul.checked=!!f.m;
+      }
     });
+
     document.querySelectorAll(".pre-chk").forEach(c=>{
       const f=s.prechecks?.find(x=>x.n===c.dataset.name && x.p==c.dataset.pt);
       if(f){ c.checked=!!f.u; }
     });
+
     finalsList.innerHTML="";
     (s.finals||[]).forEach(txt=>{
-      const m=txt.match(/^\[(\d+)点]\s*(.+)$/); if(m) finalsList.appendChild(orderLiTemplate(m[1], m[2]));
+      const m=txt.match(/^\[(\d+)点]\s*(.+)$/);
+      if(m) finalsList.appendChild(orderLiTemplate(m[1], m[2]));
     });
-    list1.innerHTML=""; (s.p1||[]).forEach(txt=>{ const m=txt.match(/^\[(\d+)点]\s*(.+)$/); if(m) list1.appendChild(mkPreOrderItem(m[1],m[2],1)); });
-    list2.innerHTML=""; (s.p2||[]).forEach(txt=>{ const m=txt.match(/^\[(\d+)点]\s*(.+)$/); if(m) list2.appendChild(mkPreOrderItem(m[1],m[2],2)); });
+
+    list1.innerHTML="";
+    (s.p1||[]).forEach(txt=>{
+      const m=txt.match(/^\[(\d+)点]\s*(.+)$/);
+      if(m) list1.appendChild(mkPreOrderItem(m[1],m[2],1));
+    });
+
+    list2.innerHTML="";
+    (s.p2||[]).forEach(txt=>{
+      const m=txt.match(/^\[(\d+)点]\s*(.+)$/);
+      if(m) list2.appendChild(mkPreOrderItem(m[1],m[2],2));
+    });
+
     rebuildFinalsList(); updatePreSummary();
   }catch{}
 }
-window.addEventListener("DOMContentLoaded",()=>{ loadState(); calcTotal(); });
 
-/* ================== プリセット保存・読込 ================== */
-const FINAL_PRESET_KEY   = "tsubame2025_final_preset";
-const PRE_PRESET_KEY     = "tsubame2025_pre_preset";
-const OVERALL_PRESET_KEY = "tsubame2025_overall_preset";
+/* =========================================================
+   19) 2枠・名前付きプリセットシステム
+========================================================= */
+const PRESET_V2_KEY = "tsubame2025_named_presets_v2";
 
+/* 旧キー（存在すればslot1に移行） */
+const FINAL_PRESET_KEY_OLD   = "tsubame2025_final_preset";
+const PRE_PRESET_KEY_OLD     = "tsubame2025_pre_preset";
+const OVERALL_PRESET_KEY_OLD = "tsubame2025_overall_preset";
+
+function defaultPresetStore(){
+  return {
+    finals: {
+      slot1:{ name:"", data:[] },
+      slot2:{ name:"", data:[] }
+    },
+    prelims: {
+      slot1:{ name:"", data:{r1:[], r2:[]} },
+      slot2:{ name:"", data:{r1:[], r2:[]} }
+    },
+    overall: {
+      slot1:{ name:"", data:null },
+      slot2:{ name:"", data:null }
+    }
+  };
+}
+
+function loadPresetStore(){
+  const raw = localStorage.getItem(PRESET_V2_KEY);
+  if(!raw){
+    const s = defaultPresetStore();
+    localStorage.setItem(PRESET_V2_KEY, JSON.stringify(s));
+    return s;
+  }
+  try{
+    const s = JSON.parse(raw);
+    return Object.assign(defaultPresetStore(), s);
+  }catch{
+    const s = defaultPresetStore();
+    localStorage.setItem(PRESET_V2_KEY, JSON.stringify(s));
+    return s;
+  }
+}
+function savePresetStore(store){
+  localStorage.setItem(PRESET_V2_KEY, JSON.stringify(store));
+}
+
+/* 旧データ移行 */
+function migrateOldPresetsIfNeeded(){
+  const store = loadPresetStore();
+
+  if(store.finals.slot1.data.length === 0){
+    const raw = localStorage.getItem(FINAL_PRESET_KEY_OLD);
+    if(raw){
+      try{
+        const data = JSON.parse(raw);
+        store.finals.slot1.data = Array.isArray(data) ? data : [];
+        store.finals.slot1.name = store.finals.slot1.name || "旧：決勝プリセット";
+      }catch{}
+    }
+  }
+  if(!store.prelims.slot1.data?.r1?.length && !store.prelims.slot1.data?.r2?.length){
+    const raw = localStorage.getItem(PRE_PRESET_KEY_OLD);
+    if(raw){
+      try{
+        const data = JSON.parse(raw);
+        if(data && typeof data === "object"){
+          store.prelims.slot1.data = { r1:data.r1||[], r2:data.r2||[] };
+          store.prelims.slot1.name = store.prelims.slot1.name || "旧：予選プリセット";
+        }
+      }catch{}
+    }
+  }
+  if(!store.overall.slot1.data){
+    const raw = localStorage.getItem(OVERALL_PRESET_KEY_OLD);
+    if(raw){
+      try{
+        const data = JSON.parse(raw);
+        store.overall.slot1.data = data;
+        store.overall.slot1.name = store.overall.slot1.name || "旧：全体プリセット";
+      }catch{}
+    }
+  }
+
+  savePresetStore(store);
+}
+migrateOldPresetsIfNeeded();
+
+/* 決勝/予選の保存用シリアライズ */
 function serializeOrderList(list){
   return [...list.querySelectorAll('.order-name')].map(n=>{
     const m=n.textContent.match(/^\[(\d+)点]\s*(.+)$/);
@@ -1940,112 +2764,139 @@ function serializeOrderList(list){
   }).filter(Boolean);
 }
 
-/* 決勝プリセット */
-document.getElementById("save-finals-preset").addEventListener("click",()=>{
-  const data = serializeOrderList(finalsList);
-  if(!data.length){
-    showToast("保存する決勝構成がありません");
-    return;
-  }
-  localStorage.setItem(FINAL_PRESET_KEY, JSON.stringify(data));
-  showToast("決勝構成を保存しました");
-});
-document.getElementById("load-finals-preset").addEventListener("click",()=>{
-  const raw = localStorage.getItem(FINAL_PRESET_KEY);
-  if(!raw){
-    showToast("保存済みの決勝構成がありません");
-    return;
-  }
-  try{
-    const data = JSON.parse(raw);
-    finalsList.innerHTML = "";
-    data.slice(0,30).forEach(d=>{
-      finalsList.appendChild(orderLiTemplate(d.pt, d.name));
-    });
-    rebuildFinalsList();
-    showToast("決勝構成を反映しました");
-  }catch{
-    showToast("決勝プリセットの読込に失敗しました");
-  }
+/* セレクトと名前入力の同期 */
+function syncPresetNameUI(kind){
+  const store = loadPresetStore();
+  const sel = document.getElementById(`${kind}-preset-slot`);
+  const nameInput = document.getElementById(`${kind}-preset-name`);
+  const slot = sel.value;
+  nameInput.value = store[kind][slot].name || "";
+}
+["finals","prelims","overall"].forEach(kind=>{
+  document.getElementById(`${kind}-preset-slot`).addEventListener("change",()=>syncPresetNameUI(kind));
+  syncPresetNameUI(kind);
 });
 
-/* 予選プリセット */
+/* ===== 決勝プリセット ===== */
+document.getElementById("save-finals-preset").addEventListener("click",()=>{
+  const data = serializeOrderList(finalsList);
+  if(!data.length){ showToast("保存する決勝構成がありません"); return; }
+
+  const store = loadPresetStore();
+  const slot = document.getElementById("finals-preset-slot").value;
+  const nm = document.getElementById("finals-preset-name").value.trim() || (slot==="slot1"?"決勝プリセット①":"決勝プリセット②");
+
+  store.finals[slot] = { name:nm, data:data.slice(0,30) };
+  savePresetStore(store);
+  showToast(`決勝構成を保存しました（${nm}）`);
+});
+
+document.getElementById("load-finals-preset").addEventListener("click",()=>{
+  const store = loadPresetStore();
+  const slot = document.getElementById("finals-preset-slot").value;
+  const pack = store.finals[slot];
+
+  if(!pack?.data?.length){ showToast("保存済みの決勝構成がありません"); return; }
+
+  finalsList.innerHTML="";
+  pack.data.slice(0,30).forEach(d=> finalsList.appendChild(orderLiTemplate(d.pt, d.name)));
+  rebuildFinalsList();
+  document.getElementById("finals-preset-name").value = pack.name || "";
+  showToast(`決勝構成を反映しました（${pack.name||"無名"}）`);
+});
+
+/* ===== 予選プリセット ===== */
 document.getElementById("save-prelims-preset").addEventListener("click",()=>{
   const r1 = serializeOrderList(list1);
   const r2 = serializeOrderList(list2);
-  if(!r1.length && !r2.length){
-    showToast("保存する予選構成がありません");
-    return;
-  }
-  const preset = {r1, r2};
-  localStorage.setItem(PRE_PRESET_KEY, JSON.stringify(preset));
-  showToast("予選構成を保存しました");
+  if(!r1.length && !r2.length){ showToast("保存する予選構成がありません"); return; }
+
+  const store = loadPresetStore();
+  const slot = document.getElementById("prelims-preset-slot").value;
+  const nm = document.getElementById("prelims-preset-name").value.trim() || (slot==="slot1"?"予選プリセット①":"予選プリセット②");
+
+  store.prelims[slot] = {
+    name:nm,
+    data:{ r1:r1.slice(0,6), r2:r2.slice(0,6) }
+  };
+  savePresetStore(store);
+  showToast(`予選構成を保存しました（${nm}）`);
 });
 
 document.getElementById("load-prelims-preset").addEventListener("click",()=>{
-  const raw = localStorage.getItem(PRE_PRESET_KEY);
-  if(!raw){
-    showToast("保存済みの予選構成がありません");
-    return;
-  }
-  try{
-    const preset = JSON.parse(raw);
-    list1.innerHTML = "";
-    list2.innerHTML = "";
-    (preset.r1 || []).slice(0,6).forEach(d=>{
-      list1.appendChild(mkPreOrderItem(d.pt, d.name, 1));
-    });
-    (preset.r2 || []).slice(0,6).forEach(d=>{
-      list2.appendChild(mkPreOrderItem(d.pt, d.name, 2));
-    });
-    updatePreSummary();
-    showToast("予選構成を反映しました");
-  }catch{
-    showToast("予選プリセットの読込に失敗しました");
-  }
+  const store = loadPresetStore();
+  const slot = document.getElementById("prelims-preset-slot").value;
+  const pack = store.prelims[slot];
+
+  if(!pack?.data){ showToast("保存済みの予選構成がありません"); return; }
+  const r1 = pack.data.r1 || [];
+  const r2 = pack.data.r2 || [];
+  if(!r1.length && !r2.length){ showToast("保存済みの予選構成がありません"); return; }
+
+  list1.innerHTML=""; list2.innerHTML="";
+  r1.slice(0,6).forEach(d=> list1.appendChild(mkPreOrderItem(d.pt, d.name, 1)));
+  r2.slice(0,6).forEach(d=> list2.appendChild(mkPreOrderItem(d.pt, d.name, 2)));
+  updatePreSummary();
+  document.getElementById("prelims-preset-name").value = pack.name || "";
+  showToast(`予選構成を反映しました（${pack.name||"無名"}）`);
 });
 
-/* 全体プリセット */
+/* ===== 全体プリセット ===== */
 document.getElementById("save-overall-preset").addEventListener("click",()=>{
   saveState();
   const raw = localStorage.getItem("tsubame2025");
-  if(!raw){
-    showToast("保存する構成がありません");
-    return;
+  if(!raw){ showToast("保存する構成がありません"); return; }
+
+  const store = loadPresetStore();
+  const slot = document.getElementById("overall-preset-slot").value;
+  const nm = document.getElementById("overall-preset-name").value.trim() || (slot==="slot1"?"全体プリセット①":"全体プリセット②");
+
+  try{
+    store.overall[slot] = { name:nm, data: JSON.parse(raw) };
+    savePresetStore(store);
+    showToast(`全体構成を保存しました（${nm}）`);
+  }catch{
+    showToast("全体プリセットの保存に失敗しました");
   }
-  localStorage.setItem(OVERALL_PRESET_KEY, raw);
-  showToast("全体構成を保存しました");
 });
 
 document.getElementById("load-overall-preset").addEventListener("click",()=>{
-  const raw = localStorage.getItem(OVERALL_PRESET_KEY);
-  if(!raw){
-    showToast("保存済みの全体構成がありません");
-    return;
-  }
+  const store = loadPresetStore();
+  const slot = document.getElementById("overall-preset-slot").value;
+  const pack = store.overall[slot];
+
+  if(!pack?.data){ showToast("保存済みの全体構成がありません"); return; }
+
   try{
     document.querySelectorAll(".chk,.multi,.pre-chk").forEach(c=>c.checked=false);
     list1.innerHTML=""; list2.innerHTML=""; finalsList.innerHTML="";
-    localStorage.setItem("tsubame2025", raw);
+    localStorage.setItem("tsubame2025", JSON.stringify(pack.data));
     loadState();
     calcTotal();
     updatePreSummary();
     rebuildFinalsList();
-    showToast("全体構成を反映しました");
+    document.getElementById("overall-preset-name").value = pack.name || "";
+    showToast(`全体構成を反映しました（${pack.name||"無名"}）`);
   }catch{
     showToast("全体プリセットの読込に失敗しました");
   }
 });
 
-/* ================== ツアー ================== */
+/* =========================================================
+   20) ツアー
+========================================================= */
 const tour=document.getElementById('tour');
 const tourHide=()=>tour.style.display='none';
 const tourNever=()=>{ localStorage.setItem('tsubame2025_tour','1'); tourHide(); };
 document.getElementById('tour-hide').addEventListener('click',tourHide);
 document.getElementById('tour-never').addEventListener('click',tourNever);
-if(!localStorage.getItem('tsubame2025_tour')){ setTimeout(()=>{ tour.style.display='flex'; }, 300); }
+if(!localStorage.getItem('tsubame2025_tour')){
+  setTimeout(()=>{ tour.style.display='flex'; }, 300);
+}
 
-/* ================== PWA 簡易対応 ================== */
+/* =========================================================
+   21) PWA 簡易対応
+========================================================= */
 (function(){
   const manifest = {
     name:"ツバメカップ2025 技チェック＆編成",
@@ -2063,7 +2914,7 @@ if(!localStorage.getItem('tsubame2025_tour')){ setTimeout(()=>{ tour.style.displ
 
 if('serviceWorker' in navigator){
   const swCode = `
-  const CACHE='tsubame2025-v1';
+  const CACHE='tsubame2025-v2';
   self.addEventListener('install',e=>{
     e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./'])));
     self.skipWaiting();
@@ -2084,6 +2935,19 @@ if('serviceWorker' in navigator){
   const swUrl = URL.createObjectURL(blob);
   navigator.serviceWorker.register(swUrl);
 }
+
+/* =========================================================
+   22) 起動処理
+========================================================= */
+window.addEventListener("DOMContentLoaded",()=>{
+  loadState();
+  calcTotal();
+  updatePreSummary();
+  rebuildFinalsList();
+
+  // プリセット名UI初期同期
+  ["finals","prelims","overall"].forEach(kind=>syncPresetNameUI(kind));
+});
 </script>
 </body>
 </html>
